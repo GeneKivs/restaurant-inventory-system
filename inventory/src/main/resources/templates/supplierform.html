@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Definition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory</a></li>
+            <li class="active">Purchase Module</li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="supplierDefinition">
+            <h3>Supplier Definition</h3>
+            <div class="action-buttons">
+                <button class="add">Add</button>
+                <button class="view">View</button>
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+                <button><a th:href="@{/purchase}">EXIT</a></button>
+            </div>
+            <div class="form-container">
+                <form th:action="@{/saveSupplier}" th:object="${supplier}" method="Post">
+                    
+
+                    <label for="supplierName">Supplier Name <span style="color: red;">*</span></label>
+                    <input type="text" id="supplierName" th:field="*{supplierName}" name="supplierName" placeholder="Enter supplier name" required>
+
+                    <label for="phoneNumber1">Phone Number 1 <span style="color: red;">*</span></label>
+                    <input type="tel" id="phoneNumber1" th:field="*{phoneNumber1}" name="phoneNumber1" placeholder="Enter primary phone number" required pattern="[0-9]{10}" title="Enter a valid 10-digit phone number">
+
+                    <label for="phoneNumber2">Phone Number 2</label>
+                    <input type="tel" id="phoneNumber2" th:field="*{phoneNumber2}" name="phoneNumber2" placeholder="Enter secondary phone number (optional)" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number">
+
+                    
+                    <button type="submit">Save Supplier</button>
+                </form>
+            </div>
+            <div class="table-container">
+                <h3>supliers</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>supplier ID</th>
+                            <th>suplier Name</th>
+                            <th>phone number1</th>
+                            <th>phone number2</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="supplier : ${suppliers}">
+                            <td th:text="${supplier.supplierID}"></td>
+                            <td th:text="${supplier.supplierName}"></td>
+                            <td th:text="${supplier.phoneNumber1}"></td>
+                            <td th:text="${supplier.phoneNumber2}"></td>
+                            <td>
+                                <a th:href="@{/supplierEdit/{supplierID}(supplierID=${supplier.supplierID})}">
+                                    <button class="edit">Edit</button>
+                                </a>
+                                <form th:action="@{/deleteSupplier/{supplierID}(supplierID=${supplier.supplierID})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this supplier?');">
+                                    <input type="hidden" name="_method" value="delete" />
+                                    <button type="submit" class="delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

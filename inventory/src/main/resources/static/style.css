@@ -1,0 +1,298 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+}
+
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #007bff;
+    color: white;
+    padding: 15px 20px;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header .icons {
+    display: flex;
+    align-items: center;
+}
+
+.header .icons i {
+    font-size: 20px;
+    margin-left: 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.header .icons .badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: red;
+    color: white;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+}
+
+.sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 250px;
+    background-color: #333;
+    color: white;
+    height: 100%;
+    padding-top: 20px;
+    z-index: 999;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 15px 20px;
+    cursor: pointer;
+}
+
+.sidebar ul li:hover, .sidebar ul li.active {
+    background-color: #007bff;
+}
+
+.sidebar ul li  a{
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.main-content {
+    margin-top: 60px;
+    margin-left: 250px;
+    padding: 20px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 10px; /* Distributes buttons evenly */
+    margin-top: 20px;
+}
+
+.tab-buttons button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.tab-buttons button a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.tab-buttons button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Slightly enlarges the button on hover */
+}
+
+.tab-buttons button:active {
+    background-color: #003366;
+}
+
+.tab-buttons button:focus {
+    outline: none;
+}
+.form-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h3 {
+    margin-bottom: 15px;
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-container form input, .form-container form select, .form-container form textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.form-container form button {
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-container form button:hover {
+    background-color: #0056b3;
+}
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.action-buttons button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #28a745;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action-buttons button.exit{
+    display: flex;
+    justify-content: flex-start; /* Aligns the button to the left */
+    margin-bottom: 1rem; 
+}
+
+.action-buttons.left-align {
+    display: flex;
+    justify-content: flex-end; /* Aligns the button to the left */
+    margin-bottom: 1rem; /* Adds some spacing */
+}
+
+.action-buttons button.view {
+    background-color: #17a2b8;
+}
+
+.action-buttons button.edit {
+    background-color: #ffc107;
+}
+
+.action-buttons button.delete {
+    background-color: #dc3545;
+}
+
+.action-buttons button:hover {
+    opacity: 0.9;
+}
+
+/* ivent dashboard table */
+.table-container {
+    margin: 20px 0;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+table th {
+    background-color: #f4f4f4;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.edit {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.delete {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.search-bar {
+    margin: 20px 0;
+    text-align: right;
+}
+
+.search-bar label {
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#searchInput {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.cards {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.quick-actions {
+    margin-top: 30px;
+}
+
+.quick-actions button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.quick-actions button:hover {
+    background-color: #0056b3;
+}

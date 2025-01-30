@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Definition</title>
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+       
+
+        <div id="itemDefinition" >
+            <h3>Item Definition</h3>
+            <div class="action-buttons">
+               
+                <button><a th:href="@{/inventory}">EXIT</a></button>
+            </div>
+            <div>
+
+            </div>
+            <div class="form-container">
+                <form th:action="@{/updateItem}" th:object="${item}" method="post">
+                    <label for="itemID">Item ID:</label>
+                    <input type="text" th:field="*{itemID}"  readonly>
+
+
+                    <label for="itemName">Item Name:</label>
+                    <input type="text" th:field="*{itemName}" placeholder="Item Name" required>
+
+                    <label for="categoryID">Category Name</label>
+                    <select name="category.categoryID" required>
+                        <option value="">Select Category</option>
+                        <option th:each="category : ${categories}" th:value="${category.categoryID}" th:text="${category.categoryName}"></option>
+                    </select>
+
+                    <label for="unitID">Unit Name</label>
+                    <select name="unit.unitID" required>
+                        <option value="">Select Unit</option>
+                        <option th:each="unit : ${units}" th:value="${unit.unitID}" th:text="${unit.unitAbbriviation}"></option>
+                    </select>
+
+                    <label for="reorderlevel">Reorder Level</label>
+                    <input type="number" th:field="*{reorderlevel}"  placeholder="Reorder Level" required>
+                    <button type="submit">update Item</button>
+                </form>
+            </div>
+          
+            
+        </div>
+
+      
+    
+</body>
+</html>

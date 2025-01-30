@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Module</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Admin Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a  th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li class="active">Admins</li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        
+
+        <!-- permission Definition -->
+        <div id=" permissionDefinition" class="form-container" >
+            <h3>Permission Definition</h3>
+            <form th:action="@{/savePermission}" th:object="${permission}" method="POST">
+                <label for="permissionName"> Permission Name</label>
+                <input type="text" name="permissionName" placeholder="Permission Name" required>
+                
+                <button type="submit">Save Permission</button>
+            </form>
+        </div>
+    </div>
+
+    
+</body>
+</html>

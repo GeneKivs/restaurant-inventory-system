@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Module</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Admin Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a  th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li class="active">Admins</li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="tab-buttons">
+            <button ><a th:href="@{/userRegistration}">User Registration</a></button>
+           
+            <button ><a th:href="@{/roles}">Role Definition</a></button>
+        </div>
+
+        <div class="table-container">
+            <h3>Users</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>email</th>
+                        <th>phone Number</th>
+                        
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="item : ${items}">
+                        <td th:text="${item.itemID}"></td>
+                        <td th:text="${item.itemName}"></td>
+                        <td th:text="${item.category.categoryName}"></td>
+                        <td th:text="${item.unit.unitAbbriviation}"></td>
+                        <td th:text="${item.quantity}"></td>
+                        <td th:text="${item.reorderlevel}"></td>
+                        <td>
+                            <a th:href="@{/itemUpdate/{itemID}(itemID=${item.itemID})}">
+                                <button class="edit">Edit</button>
+                            </a>
+                            <form th:action="@{/deleteItem/{itemID}(itemID=${item.itemID})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_method" value="delete" />
+                                <button type="submit" class="delete">Delete</button>
+                            </form>
+                                
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Module</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Admin Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a  th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li class="active">Admins</li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        
+
+        <!-- User Registration -->
+        <div id="userRegistration" class="form-container">
+            <h3>User Registration</h3>
+            <form>
+                <label for="firstName"> First Name</label>
+                <input type="text" name="firstName" placeholder="Enter First Name" required>
+                <label for="lastName"> Last Name</label>
+                <input type="text" name="lastName" placeholder="Enter Last Name" required>
+                <label for="email"> email</label>
+                <input type="email" name="email" placeholder="Enter Email" required>
+                <label for="phoneNumber"> phoneNumber</label>
+                <input type="tel" name="phoneNumber" placeholder="Enter phone Number" required>
+                <label for="supplierID">Role Name:</label>
+                <select name="role.roleID" required>
+                    <option value="">Select Role</option>
+                    <option th:each="role : ${roles}" th:value="${role.roleID}" th:text="${role.roleName}"></option>
+                </select>
+                <button type="submit">Register User</button>
+            </form>
+        </div>
+
+       
+    </div>
+
+    
+</body>
+</html>

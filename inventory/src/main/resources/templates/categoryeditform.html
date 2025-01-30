@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category Form</title>
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+        <div class="main-content">
+             <div class="form-container" >
+                <h3>Category edit</h3>
+                
+                <form th:action="@{/updateCategory}" th:object="${category}" method="POST">
+                    <label for="categoryID">category ID:</label>
+                    <input type="text" id="categoryID" th:field="*{categoryID}" readonly />
+                   
+                 <label for="categoryName"> Category Name</label>   
+                <input type="text" th:field="*{categoryName}" placeholder="Category Name">
+                <button type="submit">update Category</button>
+                </form>
+           
+            </div>
+          
+        </div>
+
+    
+</body>
+</html>

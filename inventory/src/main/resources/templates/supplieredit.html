@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Definition</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory</a></li>
+            <li class="active">Purchase Module</li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="supplierDefinition">
+            <h3>Supplier Definition</h3>
+            <div class="action-buttons">
+                <button class="add">Add</button>
+                <button class="view">View</button>
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+                <button><a th:href="@{/purchase}">EXIT</a></button>
+            </div>
+            <div class="form-container">
+                <form th:action="@{/updateSupplier}" th:object="${supplier}" method="Post">
+                    <label for="supplierID">Supplier ID </label>
+                    <input type="text" id="supplierID" th:field="*{supplierID}" name="supplierID" readonly>
+                    
+                    <label for="supplierName">Supplier Name <span style="color: red;">*</span></label>
+                    <input type="text" id="supplierName" th:field="*{supplierName}" name="supplierName" placeholder="Enter supplier name" required>
+
+                    <label for="phoneNumber1">Phone Number 1 <span style="color: red;">*</span></label>
+                    <input type="tel" id="phoneNumber1" th:field="*{phoneNumber1}" name="phoneNumber1" placeholder="Enter primary phone number" required pattern="[0-9]{10}" title="Enter a valid 10-digit phone number">
+
+                    <label for="phoneNumber2">Phone Number 2</label>
+                    <input type="tel" id="phoneNumber2" th:field="*{phoneNumber2}" name="phoneNumber2" placeholder="Enter secondary phone number (optional)" pattern="[0-9]{10}" title="Enter a valid 10-digit phone number">
+
+                    
+                    <button type="submit">Save Supplier</button>
+                </form>
+            </div>
+          
+        </div>
+    </div>
+</body>
+</html>

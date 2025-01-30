@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unit form</title>
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        
+
+        
+
+        <div class="form-container">
+            <h3>Update Unit</h3>
+            <form th:action="@{/updateUnit}" th:object="${unit}" method="POST">
+                <input type="hidden" th:field="*{unitID}" />
+                <input type="text" th:field="*{unitName}" placeholder="Unit Name" />
+                <input type="text" th:field="*{unitAbbriviation}" placeholder="Abbreviation" />
+                <button type="submit">Update Unit</button>
+            </form>
+        </div>
+
+       
+
+        
+    </div>
+
+   
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>issue form</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        
+        <div class="form-container" >
+            <h3>Issued Items</h3>
+            <div class="action-buttons">
+                <button class="add">Add</button>
+                <button class="view">View</button>
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+                <button><a th:href="@{/inventory}">EXIT</a></button>
+            </div>
+            <form th:action="@{/saveIssuedItem}" th:object="${isssueItem}" method="POST">
+                <label for="itemID">Item Name:</label>
+                <select name="item.itemID" required>
+                    <option value="">Select Item</option>
+                    <option th:each="item : ${items}" th:value="${item.itemID}" th:text="${item.itemName}"></option>
+                </select>
+                <label for="issuedQuantity">quantity:</label>
+                <input type="number" name="issuedQuantity" placeholder="issuedQuantity">
+
+                <label for="unitID">Unit Name</label>
+                    <select name="unit.unitID" required>
+                        <option value="">Select Unit</option>
+                        <option th:each="unit : ${units}" th:value="${unit.unitID}" th:text="${unit.unitAbbriviation}"></option>
+                    </select>
+
+                    <label for="issueDate">Issue Date:</label>
+                    <input type="text" name="issueDate" placeholder="issueDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly>
+    
+                <button type="submit">Record Issued Items</button>
+            </form>
+            
+        </div>
+    </div>
+     
+   
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Dashboard</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li class="active">Reports</li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h2>Report Module</h2>
+        <div class="tab-buttons">
+            <button class="active" onclick="showReportSection('listingReports')">Listing Reports</button>
+            <button onclick="showReportSection('managerialReports')">Managerial Reports</button>
+            <button onclick="showReportSection('transactionalReports')">Transactional Reports</button>
+        </div>
+
+        <!-- Listing Reports Section -->
+        <div id="listingReports" class="report-section">
+            <h3>Listing Reports</h3>
+            <form>
+                <select>
+                    <option value="itemList">Item List</option>
+                    <option value="supplierList">Supplier List</option>
+                </select>
+                <button type="button">Generate Report</button>
+            </form>
+        </div>
+
+        <!-- Managerial Reports Section -->
+        <div id="managerialReports" class="report-section" style="display: none;">
+            <h3>Managerial Reports</h3>
+            <form>
+                <select>
+                    <option value="inventoryTrends">Inventory Usage Trends</option>
+                    <option value="supplierPerformance">Supplier Performance</option>
+                </select>
+                <button type="button">Generate Report</button>
+            </form>
+        </div>
+
+        <!-- Transactional Reports Section -->
+        <div id="transactionalReports" class="report-section" style="display: none;">
+            <h3>Transactional Reports</h3>
+            <form>
+                <select>
+                    <option value="receivedItems">Received Items</option>
+                    <option value="issuedItems">Issued Items</option>
+                </select>
+                <label>From: <input type="date"></label>
+                <label>To: <input type="date"></label>
+                <button type="button">Generate Report</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showReportSection(sectionId) {
+            const sections = document.querySelectorAll('.report-section');
+            sections.forEach(section => section.style.display = 'none');
+
+            const activeButton = document.querySelector('.tab-buttons button.active');
+            if (activeButton) activeButton.classList.remove('active');
+
+            document.getElementById(sectionId).style.display = 'block';
+            document.querySelector(`.tab-buttons button[onclick="showReportSection('${sectionId}')"]`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

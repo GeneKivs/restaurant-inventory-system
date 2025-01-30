@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Restaurant Inventory System</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li class="active">Dashboard</li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="welcome">Welcome, Admin!</div>
+
+        <div class="cards">
+            <div class="card">
+                <h3>Total Items</h3>
+                <p th:text="${itemCount}"></p>
+            </div>
+            <div class="card">
+                <h3>Total Suppliers</h3>
+                <p th:text="${supplierCount}"></p>
+            </div>
+            <div class="card">
+                <h3>Pending Orders</h3>
+                <p th:text="${pendingOrdersCount}"></p>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a th:href="@{/item}">
+                <button >Add New Item</button>
+            </a>
+            
+            
+                <button >View Reports</button>
+        
+           
+            <a th:href="@{/purchase}">
+                <button >Manage Suppliers</button>
+            </a>
+            
+        </div>
+    </div>
+</body>
+</html>

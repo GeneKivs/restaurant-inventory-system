@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supplier Item Linkage</title>
+    <link rel="stylesheet" href="/style.css">
+    
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Purchase Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory</a></li>
+            <li class="active">Purchase Module</li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="supplierItemLinkage" class="form-container">
+            <h3>Supplier Item Linkage</h3>
+            <form th:action="@{/updateLinkage}" th:object="${supplierLinkage}" method="POST">
+                <label for="supplierLinkID">Supplier ID </label>
+                <input type="text" id="supplierLinkID" th:field="*{supplierLinkID}" name="supplierLinkID" readonly>
+                
+                <label for="supplierID">Supplier Name:</label>
+                <select name="supplier.supplierID" required>
+                    <option value="">Select Supplier</option>
+                    <option th:each="supplier : ${suppliers}" th:value="${supplier.supplierID}" th:text="${supplier.supplierName}"></option>
+                </select>
+
+                
+
+                <div class="add-item-form">
+                    <h4>Add Item</h4>
+                   
+                    <label for="itemID">Item Name:</label>
+                    <select name="item.itemID" required>
+                        <option value="">Select Item</option>
+                        <option th:each="item : ${items}" th:value="${item.itemID}" th:text="${item.itemName}"></option>
+                    </select>
+                    
+                </div>
+
+                <div class="action-buttons">
+                    <button type="submit" class="save">Save Linkage</button>
+                    <button><a th:href="@{/purchase}">Exit</a></button>
+                </div>
+            </form>
+        </div>
+               
+            
+        
+    </div>
+</body>
+</html>

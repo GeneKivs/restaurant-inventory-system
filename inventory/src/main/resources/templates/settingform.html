@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings Module</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Settings Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li class="active">Profile</li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="tab-buttons">
+            <button class="active" onclick="showSettingsForm('profileSettings')">Profile Settings</button>
+            <button onclick="showSettingsForm('notificationSettings')">Notifications</button>
+            <button onclick="showSettingsForm('systemSettings')">System Settings</button>
+        </div>
+
+        <!-- Profile Settings Form -->
+        <div id="profileSettings" class="form-container">
+            <h3>Profile Settings</h3>
+            <form>
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Email Address">
+                <input type="password" placeholder="New Password">
+                <button type="submit">Save Changes</button>
+            </form>
+        </div>
+
+        <!-- Notification Settings Form -->
+        <div id="notificationSettings" class="form-container" style="display: none;">
+            <h3>Notification Preferences</h3>
+            <form>
+                <label><input type="checkbox" checked> Enable Email Notifications</label>
+                <label><input type="checkbox"> Enable Push Notifications</label>
+                <button type="submit">Save Preferences</button>
+            </form>
+        </div>
+
+        <!-- System Settings Form -->
+        <div id="systemSettings" class="form-container" style="display: none;">
+            <h3>System Settings</h3>
+            <form>
+                <select>
+                    <option value="">Select Language</option>
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                </select>
+                <select>
+                    <option value="">Select Time Zone</option>
+                    <option value="utc">UTC</option>
+                    <option value="gmt">GMT</option>
+                </select>
+                <label><input type="checkbox"> Enable Dark Mode</label>
+                <button type="submit">Save Settings</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showSettingsForm(formId) {
+            const forms = document.querySelectorAll('.form-container');
+            forms.forEach(form => form.style.display = 'none');
+
+            const activeButton = document.querySelector('.tab-buttons button.active');
+            if (activeButton) activeButton.classList.remove('active');
+
+            document.getElementById(formId).style.display = 'block';
+            document.querySelector(`.tab-buttons button[onclick="showSettingsForm('${formId}')"]`).classList.add('active');
+        }
+    </script>
+</body>
+</html>

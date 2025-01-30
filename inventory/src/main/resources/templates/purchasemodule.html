@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Module</title>
+    <link rel="stylesheet" href="style.css">
+    <script>
+    function filterTable() {
+    let input = document.getElementById('searchInput'); // Get the search input
+    let filter = input.value.toLowerCase(); // Convert input to lowercase for case-insensitive search
+    let table = document.querySelector('table'); // Get the table element
+    let rows = table.getElementsByTagName('tr'); // Get all rows in the table
+
+    // Loop through the rows and hide the ones that don't match the search query
+    for (let i = 1; i < rows.length; i++) {
+        let cells = rows[i].getElementsByTagName('td'); // Get all cells in the row
+        let supplierName = cells[2] ? cells[2].textContent.toLowerCase() : ''; // Get Supplier Name cell text
+        let itemName = cells[3] ? cells[3].textContent.toLowerCase() : ''; // Get Item Name cell text
+        let orderStatus = cells[6] ? cells[6].textContent.toLowerCase() : ''; // Get Order Status cell text
+
+        // Check if the search query matches the supplier name, item name, or order status
+        if (
+            supplierName.indexOf(filter) > -1 || 
+            itemName.indexOf(filter) > -1 || 
+            orderStatus.indexOf(filter) > -1
+        ) {
+            rows[i].style.display = ''; // Show the row if it matches the filter
+        } else {
+            rows[i].style.display = 'none'; // Hide the row if it doesn't match
+        }
+    }
+}
+
+</script>
+    
+</head>
+<body>
+    <div class="header">
+        <div class="logo">purchase Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory</a></li>
+            <li class="active">Purchase Module</li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="tab-buttons">
+            <button ><a th:href="@{/supplier}">Supplier Definition</a></button>
+            <button><a th:href="@{/supplierItem}">Supplier Item Linkage</a></button>
+            <button ><a th:href="@{/purchaseOrder}">Purchase Order</a></button>
+        </div>
+        <div class="search-bar">
+           <label for="searchInput">Search:</label>
+            <input type="text" id="searchInput" placeholder="Search by Item Name, Supplier Name, or Order Status..." onkeyup="filterTable()">
+        </div>
+        <div class="table-container">
+            <h3>Orders</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Order Date</th>
+                        <th>suplier Name</th>
+                        <th>item name</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Order Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="purchaseOrder : ${orders}">
+                        <td th:text="${purchaseOrder.orderID}"></td>
+                        <td th:text="${purchaseOrder.orderDate}"></td>
+                        <td th:text="${purchaseOrder.supplier.supplierName}"></td>
+                        <td th:text="${purchaseOrder.item.itemName}"></td>
+                        <td th:text="${purchaseOrder.quantity}"></td>
+                        <td th:text="${purchaseOrder.unit.unitAbbriviation}"></td>
+                        <td th:text="${purchaseOrder.orderStatus}"></td>
+                        <td>
+                            <a th:href="@{/orderUpdate/{orderID}(orderID=${purchaseOrder.orderID})}">
+                                <button class="edit">Edit</button>
+                            </a>
+                            <button class="delete">Delete</button>
+                                
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+       
+    </div>
+    
+   
+    
+</body>
+</html>

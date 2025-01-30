@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Received Form</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+       
+        <div class="form-container" >
+            <h3>Received </h3>
+            <div class="action-buttons">
+                <button class="add">Add</button>
+                <button class="view">View</button>
+                <button class="edit">Edit</button>
+                <button class="delete">Delete</button>
+                <button><a th:href="@{/inventory}">EXIT</a></button>
+            </div>
+            
+            <form th:action="@{/receivedItem}" method="get">
+                <label for="item">Item:</label>
+                <select name="itemID" id="item" onchange="this.form.submit()" >
+                    <option value="">-- Select an Item --</option>
+                    <th:block th:each="item : ${items}">
+                        <option th:value="${item.itemID}" th:text="${item.itemName}" th:selected="${item.itemID == param.itemID}"></option>
+                    </th:block>
+                </select>
+            </form>
+<form th:action="@{/recordReceiveditem}" method="POST">
+    <input type="hidden"   name="itemID" th:value="${param.itemID}" />
+                    <div th:if="${selectedItemName}">
+                        <p>Selected Item: <span th:text="${selectedItemName}"></span></p>
+                    </div> 
+    <label for="orderID">Order:</label>
+    <select id="orderID" name="orderID" th:required="true">
+        <option value="">-- Select an Order --</option>
+        <th:block th:each="purchaseOrder : ${orders}">
+            <option 
+                    th:value="${purchaseOrder.orderID}" 
+                    th:text="'purchaseorder: ' + ${purchaseOrder.orderID} + ' | Supplier: ' + ${purchaseOrder.supplier.supplierName} + '| item:' + ${purchaseOrder.item.itemName} + '| quantity:' + ${purchaseOrder.quantity} ">
+            </option>
+        </th:block>
+    </select>
+
+                <label for="receiveedquantity">quantity:</label>
+                <input type="number" name="receiveedquantity" placeholder="receiveedquantity">
+
+                <label for="unitID">Unit Name</label>
+                    <select name="unit.unitID" required>
+                        <option value="">Select Unit</option>
+                        <option th:each="unit : ${units}" th:value="${unit.unitID}" th:text="${unit.unitAbbriviation}"></option>
+                    </select>
+
+                <label for="ReceivedDate">Received Date:</label>
+                <input type="text" name="receivedDate" placeholder="Received Date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly>
+
+                <label for="expiryDate">Expiry Date:</label>
+    <input type="date" id="expiryDate" name="expiryDate"  min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
+
+                <button type="submit">Record Received Items</button>
+            </form>
+            
+        </div>
+
+    </div>
+
+    
+    
+</body>
+</html>

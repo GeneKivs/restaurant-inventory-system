@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>unit form</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        
+
+        
+
+        <div  class="form-container" >
+            <h3>Unit Definition</h3>
+            <div class="action-buttons">
+                
+                <a th:href="@{/inventory}">
+                    <button class="exit">Exit</button>
+                </a>
+            </div>
+            <form th:action="@{/saveUnit}" th:object="${unit}" method="POST">
+                <input type="text" th:field="*{unitName}" placeholder="Unit Name">
+                <input type="text" th:field="*{unitAbbriviation}" placeholder="Abbreviation">
+                <button type="submit">Save Unit</button>
+            </form>
+            <div class="table-container">
+                <h3>supliers</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Unit ID</th>
+                            <th>unit Name</th>
+                            <th>unit Abbriviation</th>
+                            
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="unit : ${units}">
+                            <td th:text="${unit.unitID}"></td>
+                            <td th:text="${unit.unitName}"></td>
+                            <td th:text="${unit.unitAbbriviation}"></td>
+                            
+                            <td>
+                                <a th:href="@{/edit/{unitID}(unitID=${unit.unitID})}">
+                                    <button class="edit">Edit</button>
+                                </a>
+                                <form th:action="@{/delete/{unitID}(unitID=${unit.unitID})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this unit?');">
+                                    <input type="hidden" name="_method" value="delete" />
+                                    <button type="submit" class="delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+        </div>
+        
+
+       
+
+        
+    </div>
+
+   
+</body>
+</html>

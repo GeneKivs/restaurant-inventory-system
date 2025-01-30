@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Module</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script>
+        async function downloadAndPrint() {
+            // Get the form data
+            const orderID = document.querySelector('input[name="orderID"]').value;
+            const itemName = document.querySelector('input[name="itemName"]').value;
+            const supplierName = document.querySelector('select[name="supplier.supplierID"] option:checked').textContent;
+            const quantity = document.querySelector('input[name="quantity"]').value;
+            const unit = document.querySelector('select[name="unit.unitID"] option:checked').textContent;
+            const orderDate = document.getElementById('orderDate').value;
+
+            // Create a content string for the PDF/print
+            const content = `
+                Purchase Order
+                ------------------------
+                Order ID: ${orderID}
+                Item Name: ${itemName}
+                Supplier Name: ${supplierName}
+                Quantity: ${quantity}
+                Unit: ${unit}
+                Date of Order: ${orderDate}
+            `;
+
+            // Create a jsPDF instance
+            const { jsPDF } = window.jspdf;
+            const pdf = new jsPDF();
+
+            // Add content to the PDF
+            pdf.text(content, 10, 10);
+
+            // Save the generated PDF
+            pdf.save("PurchaseOrder.pdf");
+
+            // Open the print dialog
+            setTimeout(() => {
+                // Create a new window for printing
+                const printWindow = window.open('', '', 'height=600,width=800');
+                printWindow.document.write('<html><head><title>Print Purchase Order</title></head><body>');
+                printWindow.document.write(`<pre>${content}</pre>`);
+                printWindow.document.write('</body></html>');
+                printWindow.document.close();
+                printWindow.print();
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory</a></li>
+            <li class="active">Purchase Module</li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/setting}">Profile</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div id="purchaseOrder" class="form-container">
+            <h3>Purchase Order</h3>
+            <div class="action-buttons">
+                <button class="add">Add</button>
+                <button onclick="downloadAndPrint()">Print</button>
+                <button><a th:href="@{/purchase}">EXIT</a></button>
+            </div>
+            
+            <form th:action="@{/updateOrder}" method="POST">
+                    <input type="hidden" name="orderID" th:value="${purchaseOrder.orderID}" />
+                    <label for="item">Item:</label>
+                    <input type="text" id="item" name="itemName" th:value="${purchaseOrder.item.itemName}" readonly>
+                    <input type="hidden" name="itemID" th:value="${purchaseOrder.item.itemID}" />
+
+
+                
+               
+                   
+                    
+                    <label for="supplierID">Supplier Name:</label>
+                <select name="supplier.supplierID" required>
+                    <option value="" >Select Supplier</option>
+                    <th:block th:each="supplier : ${suppliers}">
+                        <option th:value="${supplier.supplierID}" th:text="${supplier.supplierName}"
+                                ></option>
+                    </th:block>
+                </select>
+                
+                <label for="orderDate">Date of Order:</label>
+                <input type="text" id="orderDate" name="orderDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly>
+              
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" id="quantity" th:value="${purchaseOrder.quantity}" required />
+              
+                <label for="unitID">Unit </label>
+                    <select name="unit.unitID" required>
+                        <option value="">Select Unit</option>
+                        <option th:each="unit : ${units}" th:value="${unit.unitID}" th:text="${unit.unitAbbriviation}"></option>
+                    </select>
+              
+                
+                <input type="checkbox" name="cancel" id="cancel" 
+                       th:checked="${purchaseOrder.orderStatus.equalsIgnoreCase('CANCELLED')}" />
+
+                       <label for="cancelationReason">Cancellation Reason:</label>
+                       <textarea name="cancelationReason" id="cancelationReason" 
+                                 th:value="${purchaseOrder.cancelationReason}" 
+                                 th:disabled="${!purchaseOrder.orderStatus.equalsIgnoreCase('CANCELLED')}"></textarea>
+                   
+              
+               
+              
+                <button type="submit" id="saveOrder">Save Order</button>
+              </form>
+              
+        </div>
+    </div>
+    
+</body>
+</html>
