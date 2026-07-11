@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Module</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="/Helpscript.js"></script>
 </head>
 <body>
     <div class="header">
@@ -17,22 +26,61 @@
 
     <div class="sidebar">
         <ul>
-            <li><a  th:href="@{/}">Dashboard</a></li>
+            <li><a  th:href="@{/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/inventory}">Inventory </a> </li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li class="active">Admins</li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+            <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+        </div>
+        <div th:if="${successMessage}" class="success-message">
+            <p th:text="${successMessage}"></p>
+            <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+        </div>
         
 
         <!-- User Registration -->
         <div id="userRegistration" class="form-container">
+            <div class="action-buttons">
+                
+
+                <button><a th:href="@{/admin}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div>
+            <!-- Help Modal -->
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - User Registration</h2>
+        <p>This form is used to register new users for the admin module. Please fill in the following details:</p>
+        <ul>
+            <li><strong>First Name:</strong> Enter the user's first name (e.g., John).</li>
+            <li><strong>Last Name:</strong> Enter the user's last name (e.g., Doe).</li>
+            <li><strong>Email:</strong> Enter the user's email address. This will be used for communication and login purposes. Ensure that the email is in the correct format (e.g., example@mail.com).</li>
+            <li><strong>Phone Number:</strong> Enter the user's phone number. This will be used for contact purposes and should be in a valid format (e.g., 123-456-7890).</li>
+            <li><strong>Role Name:</strong> Select the role that this user will have. The available roles are predefined in the system, and you must choose one (e.g., Admin, Manager, etc.).</li>
+            <li><strong>Register User Button:</strong> After filling out the form, click the <strong>Register User</strong> button to save the new user.</li>
+        </ul>
+        <p><strong>Important Notes:</strong></p>
+        <ul>
+            <li>Ensure that all fields are filled in correctly before submitting the form.</li>
+            <li>If any error occurs during registration, an error message will appear on the screen.</li>
+            <li>If registration is successful, a success message will be displayed, and the new user will be registered.</li>
+        </ul>
+    </div>
+</div>
+
             <h3>User Registration</h3>
-            <form>
+            <form th:action="@{/saveUser}" method="post">
                 <label for="firstName"> First Name</label>
                 <input type="text" name="firstName" placeholder="Enter First Name" required>
                 <label for="lastName"> Last Name</label>

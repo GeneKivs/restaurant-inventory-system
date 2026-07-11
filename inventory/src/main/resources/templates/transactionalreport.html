@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        function toggleTable() {
+            let selectedType = document.getElementById("transactionType").value;
+            document.getElementById("receivedReport").style.display = (selectedType === "receivedItems") ? "block" : "none";
+            document.getElementById("issuedReport").style.display = (selectedType === "issuedItems") ? "block" : "none";
+        }
+
+        function downloadPDF(elementId, filename) {
+            const element = document.getElementById(elementId);
+            html2pdf().from(element).save(filename);
+        }
+    </script>
+    <style>
+        .no-export {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Transactionreport</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li class="active">Reports</li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h2>Transactional Reports</h2>
+        <div class="action-buttons">
+                
+            <button><a th:href="@{/report}">EXIT</a></button>
+        </div>
+        
+        <!-- Transaction Report Form -->
+        <form method="get" th:action="@{/report/transactional}">
+            <label for="transactionType">Select Transaction:</label>
+            <select name="transactionType" id="transactionType" onchange="toggleTable()">
+                <option value="">-- Select Transaction --</option>
+                <option value="receivedItems">Received Items</option>
+                <option value="issuedItems">Issued Items</option>
+            </select>
+            <label>From: <input type="date" name="startDate" required></label>
+            <label>To: <input type="date" name="endDate" required></label>
+            <button type="submit">Generate Report</button>
+        </form>
+
+        <!-- Received Items Table -->
+        <div id="receivedReport" th:if="${receivedItems != null}">
+            <h3>Received Items</h3>
+            <button  onclick="downloadPDF('receivedReport', 'Received_Items_Report.pdf')">Download Received Report</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recieved ID</th>
+                        <th>Item Name</th>
+                        <th>orderID</th>
+                        <th>suppllier</th>
+                        <th>Recieved date</th>
+                        <th>Received Quantity</th>
+                        <th>Damaged Quantity</th>
+                        <th>Pending Quantity</th>
+                        
+                        <th>unit</th>
+                        <th>Received Status</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="receivedItem: ${receivedItems}">
+                        <td th:text="${receivedItem.receivedID}"></td>
+                        <td th:text="${receivedItem.item.itemName}"></td>
+                        <td th:text="${receivedItem.purchaseOrder.orderID}"></td>
+                        <td th:text="${receivedItem.purchaseOrder.supplier.supplierName}"></td>
+                        <td th:text="${receivedItem.receivedDate}"></td>
+                        <td th:text="${receivedItem.receiveedquantity}"></td>
+                        <td th:text="${receivedItem.damagequantity}"></td>
+                        <td th:text="${receivedItem.pendingquantity}"></td>
+                        <td th:text="${receivedItem.item.unit.unitAbbriviation}"></td>
+                        <td th:text="${receivedItem.receivedStatus}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Issued Items Table -->
+        <div id="issuedReport"th:if="${issuedItems != null}">
+            <h3>Issued Items</h3>
+            <button  onclick="downloadPDF('issuedReport', 'Issued_Items_Report.pdf')">Download Issued Report</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Issue ID</th>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>unit</th>
+                        <th>Issue date</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="isssueItem: ${issuedItems}">
+                        <td th:text="${isssueItem.issueID}"></td>
+                        <td th:text="${isssueItem.item.itemName}"></td>
+                        <td th:text="${isssueItem.issuedQuantity}"></td>
+                        <td th:text="${isssueItem.item.unit.unitAbbriviation}"></td>
+                        <td th:text="${isssueItem.issuDate}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+</body>
+</html>

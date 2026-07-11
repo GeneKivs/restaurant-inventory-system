@@ -3,53 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inventory Module</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Purchase Module</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script>
-        function saveAndConfirm(form) {
-            // Submit the form and wait for a response from the backend
-            form.submit();
-    
-            // After submission, confirm and print
-            const orderID = document.getElementById("orderID").value;
-            const item = document.getElementById("item").selectedOptions[0].text;
-            const supplier = form.querySelector('select[name="supplier.supplierID"]').selectedOptions[0].text;
-            const orderDate = document.getElementById("orderDate").value;
-            const quantity = document.getElementById("quantity").value;
-            const unit = form.querySelector('select[name="unit.unitID"]').selectedOptions[0].text;
-    
-            const confirmation = confirm("Order saved successfully. Do you want to print this order?");
-            if (confirmation) {
-                // Create the print content
-                const printContent = `
-                    <h3>Purchase Order</h3>
-                    <p><strong>Order ID:</strong> ${orderID}</p>
-                    <p><strong>Item Name:</strong> ${item}</p>
-                    <p><strong>Supplier Name:</strong> ${supplier}</p>
-                    <p><strong>Date of Order:</strong> ${orderDate}</p>
-                    <p><strong>Quantity:</strong> ${quantity}</p>
-                    <p><strong>Unit:</strong> ${unit}</p>
-                `;
-    
-                // Open a new window for printing
-                const printWindow = window.open('', '', 'height=600,width=800');
-                printWindow.document.write('<html><head><title>Print Purchase Order</title></head><body>');
-                printWindow.document.write(printContent);
-                printWindow.document.write('</body></html>');
-                printWindow.document.close();
-                printWindow.print();
+        // Make jsPDF available globally
+        const { jsPDF } = window.jspdf;
+        
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
             }
-    
-            return false; // Prevent the default form submission flow
+        }
+        
+        function generatePDF(orderData) {
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(18);
+            doc.text('Purchase Order', 105, 20, { align: 'center' });
+            
+            // Add order details
+            doc.setFontSize(12);
+            doc.text(`Order #: ${orderData.orderID}`, 20, 40);
+            doc.text(`Date: ${orderData.orderDate}`, 20, 50);
+            doc.text(`Item: ${orderData.itemName}`, 20, 60);
+            doc.text(`Supplier: ${orderData.supplierName}`, 20, 70);
+            doc.text(`Supplier Phone: ${orderData.supplierPhone}`, 20, 80);
+            doc.text(`Quantity: ${orderData.quantity} ${orderData.unit}`, 20, 90);
+            
+            // Save the PDF
+            doc.save(`PurchaseOrder_${orderData.orderID}.pdf`);
+            
+            // Close the success message
+            closeMessage('success-message');
+        }
+        
+        function printOrder(orderID) {
+            // Fetch order details from the server
+            fetch(`/purchase/getOrderDetails/${orderID}`)
+                .then(response => response.json())
+                .then(data => {
+                    generatePDF(data);
+                })
+                .catch(error => {
+                    console.error('Error fetching order details:', error);
+                    alert('Failed to fetch order details for printing');
+                });
         }
     </script>
+    
+        <script>
+            function closeMessage(className) {
+                var message = document.querySelector('.' + className);
+                if (message) {
+                    message.style.display = 'none';
+                }
+            }
+        </script>
+        <script src="/Helpscript.js"></script>
+    
+    
+    
     
     
 
 </head>
 <body>
     <div class="header">
-        <div class="logo">Inventory Module</div>
+        <div class="logo">Purchase Module</div>
         <div class="icons">
             <i class="notification">🔔<span class="badge">3</span></i>
             <i class="help">❓</i>
@@ -58,24 +81,69 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/inventory}">Inventory</a></li>
             <li class="active">Purchase Module</li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
         <div id="purchaseOrder" class="form-container">
             <h3>Purchase Order</h3>
-            <div class="action-buttons">
-                <button class="add">Add</button>
-                <button><a th:href="@{/purchase}">EXIT</a></button>
+             <!-- Success Message -->
+             <div th:if="${errorMessage}" class="error-message">
+                <p th:text="${errorMessage}"></p>
+                <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
             </div>
+            <div th:if="${successMessage}" class="success-message">
+                <p th:text="${successMessage}"></p>
+                <div th:if="${savedOrderID}">
+                    <p>Would you like to print the order?</p>
+                    <button th:onclick="'printOrder(' + ${savedOrderID} + ')'">Yes</button>
+                    <button onclick="closeMessage('success-message')">No</button>
+                </div>
+                <div th:unless="${savedOrderID}">
+                <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+            </div>
+            </div>   
             
-                <form th:action="@{/purchaseOrder}" method="get">
+             
+             
+            <div class="action-buttons">
+                
+                <button><a th:href="@{/purchase}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div>
+            <!-- Help Modal -->
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Purchase Order</h2>
+        <p>This form allows you to create a new purchase order for inventory items. Follow these instructions carefully:</p>
+        <ul>
+            <li><strong>Item:</strong> Select the item you want to order from the dropdown list.</li>
+            <li><strong>Supplier Name:</strong> Choose the supplier providing the item.</li>
+            <li><strong>Date of Order:</strong> The current date is automatically filled in and cannot be edited.</li>
+            <li><strong>Quantity:</strong> Enter the quantity of items you wish to order.</li>
+            <li><strong>Unit:</strong> Displays the unit of measurement for the selected item and cannot be edited.</li>
+            <li><strong>Save Order Button:</strong> Click this button to save the purchase order.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>Ensure that you have selected the correct item and supplier before submitting the order.</li>
+            <li>If you wish to exit without saving, click the <strong>EXIT</strong> button.</li>
+            <li>After saving, you can choose to print the purchase order.</li>
+        </ul>
+    </div>
+</div>
+
+            
+                <form th:action="@{/purchase/purchaseOrder}" method="get">
                     <label for="item">Item:</label>
                     <select name="itemID" id="item" onchange="this.form.submit()" >
                         <option value="">-- Select an Item --</option>
@@ -85,7 +153,7 @@
                     </select>
                 
                 </form>
-                <form id="purchaseOrderForm" th:action="@{/saveOrder}" th:object="${purchaseOrder}" method="POST" onsubmit="return saveAndConfirm(this)">
+                <form id="purchaseOrderForm" th:action="@{/saveOrder}" th:object="${purchaseOrder}" method="POST" >
                     <input type="hidden"   name="itemID" th:value="${param.itemID}" />
                     <div th:if="${selectedItemName}">
                         <p>Selected Item: <span th:text="${selectedItemName}"></span></p>
@@ -103,14 +171,10 @@
                 <label for="quantity">Quantity:</label>
                 <input type="number"  th:field="*{quantity}" required />
               
-                <label for="unitID">Unit </label>
-                    <select name="unit.unitID" required>
-                        <option value="">Select Unit</option>
-                        <option th:each="unit : ${units}" th:value="${unit.unitID}" th:text="${unit.unitAbbriviation}"></option>
-                    </select>
-              
-                <label for="orderStatus">Order Status:</label>
-                <input type="text" id="orderStatus" readonly value="Pending" />
+                <label for="unit">Unit:</label>
+                <input type="text" id="unit" th:value="${selectedUnit != null ? selectedUnit.unitAbbriviation : ''}" readonly>
+                <input type="hidden" name="unitID" th:value="${selectedUnit != null ? selectedUnit.unitID : ''}">
+               
               
                
               

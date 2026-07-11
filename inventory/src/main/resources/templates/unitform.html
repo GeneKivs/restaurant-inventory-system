@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>unit form</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script src="/Helpscript.js"></script>
+    
 
 </head>
 <body>
@@ -18,12 +20,14 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li class="active">Inventory Module</li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
@@ -38,15 +42,34 @@
                 
                 <a th:href="@{/inventory}">
                     <button class="exit">Exit</button>
+                    <button class="help" onclick="openHelp()">❓ Help</button>
                 </a>
             </div>
+            <!-- Help Modal -->
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Unit Definition</h2>
+        <p>This form allows you to define new units of measurement for the inventory system. Follow these steps:</p>
+        <ul>
+            <li><strong>Unit Name:</strong> Enter the name of the unit (e.g., Kilogram, Liter, etc.). This will represent the unit used to measure the items in the inventory.</li>
+            <li><strong>Abbreviation:</strong> Enter an abbreviation for the unit (e.g., kg for Kilogram, l for Liter). This will be used in reports and in the user interface to make the unit more compact.</li>
+            <li><strong>Save Unit Button:</strong> After filling in the details, click the <strong>Save Unit</strong> button to save the new unit of measurement.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>If you need to exit the form without saving, click the <strong>Exit</strong> button to return to the previous page.</li>
+        </ul>
+    </div>
+</div>
+
             <form th:action="@{/saveUnit}" th:object="${unit}" method="POST">
                 <input type="text" th:field="*{unitName}" placeholder="Unit Name">
                 <input type="text" th:field="*{unitAbbriviation}" placeholder="Abbreviation">
                 <button type="submit">Save Unit</button>
             </form>
             <div class="table-container">
-                <h3>supliers</h3>
+                <h3>Units Of measurement</h3>
                 <table>
                     <thead>
                         <tr>
@@ -64,7 +87,7 @@
                             <td th:text="${unit.unitAbbriviation}"></td>
                             
                             <td>
-                                <a th:href="@{/edit/{unitID}(unitID=${unit.unitID})}">
+                                <a th:href="@{/inventory/edit/{unitID}(unitID=${unit.unitID})}">
                                     <button class="edit">Edit</button>
                                 </a>
                                 <form th:action="@{/delete/{unitID}(unitID=${unit.unitID})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this unit?');">

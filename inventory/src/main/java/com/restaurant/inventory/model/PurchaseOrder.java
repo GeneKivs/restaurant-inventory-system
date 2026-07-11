@@ -25,7 +25,7 @@ public class PurchaseOrder {
     private Item item;
 
     @ManyToOne
-    @JoinColumn(name = "supplierID", nullable = false)
+    @JoinColumn(name = "supplierID", nullable = true)
     private Supplier supplier;
 
     private double quantity;

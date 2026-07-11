@@ -4,7 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>issue form</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function updateUnit() {
+            var itemSelect = document.getElementById("item");
+            var selectedOption = itemSelect.options[itemSelect.selectedIndex];
+    
+            var unitAbbreviation = selectedOption.getAttribute("data-unit-abbr");
+            var unitID = selectedOption.getAttribute("data-unit-id");
+    
+            document.getElementById("unit").value = unitAbbreviation || "";
+            document.getElementById("unitID").value = unitID || "";
+        }
+    </script>
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="/Helpscript.js"></script>
 
 </head>
 <body>
@@ -18,43 +39,75 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li class="active">Inventory Module</li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+            <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+        </div>
+        <div th:if="${successMessage}" class="success-message">
+            <p th:text="${successMessage}"></p>
+            <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+        </div>
         
         <div class="form-container" >
             <h3>Issued Items</h3>
             <div class="action-buttons">
-                <button class="add">Add</button>
-                <button class="view">View</button>
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
+                
+                <button><a th:href="@{/inventory/issuelist}">Issued List</a></button>
                 <button><a th:href="@{/inventory}">EXIT</a></button>
-            </div>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div> 
+            <!-- Help Modal --> 
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Issued Items</h2>
+        <p>This form is used to record items that have been issued from the inventory. Please follow the instructions below:</p>
+        <ul>
+            <li><strong>Item Name:</strong> Select the item you want to issue. The unit will automatically populate.</li>
+            <li><strong>Quantity:</strong> Enter the number of units you are issuing.</li>
+            <li><strong>Unit:</strong> This shows the unit of measurement for the selected item (e.g., pieces, kilograms). It is read-only.</li>
+            <li><strong>Issue Date:</strong> Displays the date of issuing. It is automatically filled with today’s date and is read-only.</li>
+            <li><strong>Record Issued Items:</strong> After filling in the details, click this button to save the issued item into the system.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>Make sure the selected item and issued quantity are correct to maintain accurate inventory records.</li>
+            <li>If an item is missing from the list, ensure it has been defined in the inventory items first.</li>
+        </ul>
+    </div>
+</div>
+
             <form th:action="@{/saveIssuedItem}" th:object="${isssueItem}" method="POST">
                 <label for="itemID">Item Name:</label>
-                <select name="item.itemID" required>
-                    <option value="">Select Item</option>
-                    <option th:each="item : ${items}" th:value="${item.itemID}" th:text="${item.itemName}"></option>
-                </select>
+<select name="item" id="item" onchange="updateUnit()">
+    <option value="">-- Select an Item --</option>
+    <th:block th:each="item : ${items}">
+        <option th:value="${item.itemID}" th:data-unit-abbr="${item.unit.unitAbbriviation}" 
+                th:data-unit-id="${item.unit.unitID}" th:text="${item.itemName}">
+        </option>
+    </th:block>
+</select>
                 <label for="issuedQuantity">quantity:</label>
                 <input type="number" name="issuedQuantity" placeholder="issuedQuantity">
 
-                <label for="unitID">Unit Name</label>
-                    <select name="unit.unitID" required>
-                        <option value="">Select Unit</option>
-                        <option th:each="unit : ${units}" th:value="${unit.unitID}" th:text="${unit.unitAbbriviation}"></option>
-                    </select>
+                <label for="unit">Unit:</label>
+<input type="text" id="unit" readonly>
+<input type="hidden" name="unitID" id="unitID">
 
-                    <label for="issueDate">Issue Date:</label>
-                    <input type="text" name="issueDate" placeholder="issueDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly>
+                    <l<label for="issuDate">Issue Date:</label>
+                    <input type="text" id="issuDate" name="issuDate"th:value="${#temporals.format(#temporals.createNow(), 'yyyy-MM-dd')}" readonly>
     
                 <button type="submit">Record Issued Items</button>
             </form>

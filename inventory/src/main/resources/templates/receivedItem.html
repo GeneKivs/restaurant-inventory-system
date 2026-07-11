@@ -4,7 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Received Form</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="/Helpscript.js"></script>
+    <script>
+    // Set minimum expiry date to tomorrow
+    const expiryInput = document.getElementById('expiryDate');
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const yyyy = tomorrow.getFullYear();
+    const mm = String(tomorrow.getMonth() + 1).padStart(2, '0');
+    const dd = String(tomorrow.getDate()).padStart(2, '0');
+
+    expiryInput.min = `${yyyy}-${mm}-${dd}`;
+</script>
+
+
 
 </head>
 <body>
@@ -18,28 +41,62 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li class="active">Inventory Module</li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
-       
+                <!-- Success and Error Messages with Named Buttons -->
+                <div th:if="${errorMessage}" class="error-message">
+                    <p th:text="${errorMessage}"></p>
+                    <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+                </div>
+                <div th:if="${successMessage}" class="success-message">
+                    <p th:text="${successMessage}"></p>
+                    <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+                </div>  
+                <div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Received Item</h2>
+        <p>This form allows you to record received items into the inventory system. Please follow the steps below:</p>
+        <ul>
+            <li><strong>Item:</strong> Select the item you are receiving from the dropdown list.</li>
+            <li><strong>Order:</strong> Choose the corresponding purchase order for the item.</li>
+            <li><strong>Received Quantity:</strong> Enter the quantity of the item that has been received.</li>
+            <li><strong>Damaged Quantity:</strong> Enter any damaged quantity, if applicable (default is 0).</li>
+            <li><strong>Unit:</strong> The unit of measurement for the selected item will be displayed, and cannot be edited.</li>
+            <li><strong>Received Date:</strong> The current date is automatically filled in and cannot be edited.</li>
+            <li><strong>Expiry Date:</strong> Enter the expiry date of the received item, if applicable.</li>
+            <li><strong>Record Received Items Button:</strong> Click this button to save the received item record.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>Ensure that the correct item and purchase order are selected before submitting.</li>
+            <li>If you wish to exit without saving, click the <strong>EXIT</strong> button.</li>
+            <li>If the quantity received is different from what was ordered, make sure to enter the appropriate value in the "Received Quantity" field.</li>
+        </ul>
+    </div>
+</div>
+ 
         <div class="form-container" >
+            
             <h3>Received </h3>
             <div class="action-buttons">
-                <button class="add">Add</button>
-                <button class="view">View</button>
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
+                
+                <button><a th:href="@{/inventory/receivedlist}">Recieveditem List</a></button>
                 <button><a th:href="@{/inventory}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
             </div>
             
-            <form th:action="@{/receivedItem}" method="get">
+            <form th:action="@{/inventory/receivedItem}" method="get">
                 <label for="item">Item:</label>
                 <select name="itemID" id="item" onchange="this.form.submit()" >
                     <option value="">-- Select an Item --</option>
@@ -64,20 +121,21 @@
         </th:block>
     </select>
 
-                <label for="receiveedquantity">quantity:</label>
+                <label for="receiveedquantity">Received  quantity:</label>
                 <input type="number" name="receiveedquantity" placeholder="receiveedquantity">
+                 
+                <label for="damagequantity">Damaged quantity</label>
+                <input type="number" name="damagequantity" placeholder="damaged quantity" step="0.01" min="0" value="0">
 
-                <label for="unitID">Unit Name</label>
-                    <select name="unit.unitID" required>
-                        <option value="">Select Unit</option>
-                        <option th:each="unit : ${units}" th:value="${unit.unitID}" th:text="${unit.unitAbbriviation}"></option>
-                    </select>
+                <label for="unit">Unit:</label>
+                <input type="text" id="unit" th:value="${selectedUnit != null ? selectedUnit.unitAbbriviation : ''}" readonly>
+                <input type="hidden" name="unitID" th:value="${selectedUnit != null ? selectedUnit.unitID : ''}">
 
                 <label for="ReceivedDate">Received Date:</label>
                 <input type="text" name="receivedDate" placeholder="Received Date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly>
 
                 <label for="expiryDate">Expiry Date:</label>
-    <input type="date" id="expiryDate" name="expiryDate"  min="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" />
+    <input type="date" id="expiryDate" name="expiryDate"   />
 
                 <button type="submit">Record Received Items</button>
             </form>

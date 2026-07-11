@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supplier Definition</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="/Helpscript.js"></script>
 </head>
 <body>
     <div class="header">
@@ -17,12 +26,14 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/inventory}">Inventory</a></li>
             <li class="active">Purchase Module</li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
@@ -30,12 +41,31 @@
         <div id="supplierDefinition">
             <h3>Supplier Definition</h3>
             <div class="action-buttons">
-                <button class="add">Add</button>
-                <button class="view">View</button>
-                <button class="edit">Edit</button>
-                <button class="delete">Delete</button>
+                
                 <button><a th:href="@{/purchase}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
             </div>
+            <!-- Help Modal -->
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Supplier Definition</h2>
+        <p>This form allows you to edit supplier details in the system. Follow these steps:</p>
+        <ul>
+            <li><strong>Supplier ID:</strong> This field is automatically filled and cannot be edited. It represents the unique identifier for the supplier.</li>
+            <li><strong>Supplier Name:</strong> Enter the name of the supplier. This field is required and cannot be left blank.</li>
+            <li><strong>Phone Number 1:</strong> Enter the primary phone number for the supplier. This field is required and must be a valid 10-digit phone number.</li>
+            <li><strong>Phone Number 2:</strong> Enter the secondary phone number for the supplier (optional). It must be a valid 10-digit phone number if provided.</li>
+            <li><strong>Save Supplier Button:</strong> Once the supplier details are updated, click this button to save the changes.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>If you wish to exit without saving, click the <strong>EXIT</strong> button.</li>
+            <li>Ensure that you have entered a valid phone number before saving.</li>
+        </ul>
+    </div>
+</div>
+
             <div class="form-container">
                 <form th:action="@{/saveSupplier}" th:object="${supplier}" method="Post">
                     
@@ -52,6 +82,14 @@
                     
                     <button type="submit">Save Supplier</button>
                 </form>
+            </div>
+            <div th:if="${errorMessage}" class="error-message">
+                <p th:text="${errorMessage}"></p>
+                <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+            </div>
+            <div th:if="${successMessage}" class="success-message">
+                <p th:text="${successMessage}"></p>
+                <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
             </div>
             <div class="table-container">
                 <h3>supliers</h3>

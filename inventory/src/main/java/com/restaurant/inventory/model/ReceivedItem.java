@@ -21,6 +21,16 @@ public class ReceivedItem {
 
     private LocalDate receivedDate;
 
+    private LocalDate editedDate;
+
+    public LocalDate getEditedDate() {
+        return editedDate;
+    }
+
+    public void setEditedDate(LocalDate editedDate) {
+        this.editedDate = editedDate;
+    }
+
     @ManyToOne
     @JoinColumn(name = "orderID", nullable = false)
     private PurchaseOrder purchaseOrder;
@@ -31,6 +41,56 @@ public class ReceivedItem {
 
     private double receiveedquantity;
 
+    private double expiredstock;
+
+    public double getExpiredstock() {
+        return expiredstock;
+    }
+
+    public void setExpiredstock(double expiredstock) {
+        this.expiredstock = expiredstock;
+    }
+
+    private double damagequantity = 0;
+
+    public double getDamagequantity() {
+        return damagequantity;
+    }
+
+    public void setDamagequantity(double damagequantity) {
+        this.damagequantity = damagequantity;
+    }
+
+    private double remainingQuantity;
+
+    public double getRemainingQuantity() {
+        return remainingQuantity;
+    }
+
+    public void setRemainingQuantity(double remainingQuantity) {
+        this.remainingQuantity = remainingQuantity;
+    }
+
+    private double pendingquantity = 0;
+
+    public double getPendingquantity() {
+        return pendingquantity;
+    }
+
+    public void setPendingquantity(double pendingquantity) {
+        this.pendingquantity = pendingquantity;
+    }
+
+    private String receivedStatus;
+
+
+    public String getReceivedStatus() {
+        return receivedStatus;
+    }
+
+    public void setReceivedStatus(String receivedStatus) {
+        this.receivedStatus = receivedStatus;
+    }
 
     @ManyToOne
     @JoinColumn(name = "unitID",nullable = false)

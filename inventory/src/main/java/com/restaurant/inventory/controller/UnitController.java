@@ -21,7 +21,7 @@ public class UnitController {
     @Autowired
     private UnitService unitService;
 
-    @GetMapping("/unit")
+    @GetMapping("/inventory/unit")
     public String showUnitform(Model model){
         Unit unit = new Unit();
         model.addAttribute("unit", unit);
@@ -36,7 +36,7 @@ public class UnitController {
         System.out.println(unit);
         unitService.defineUnit(unit);
 
-        return "redirect:/";
+        return "redirect:/inventory/unit";
     }
     // Show the edit form for a specific unit
     @GetMapping("/edit/{unitID}")
@@ -51,13 +51,13 @@ public class UnitController {
     @PostMapping("/updateUnit")
     public String updateUnit(@ModelAttribute("unit") Unit unit) {
         unitService.updateUnit(unit);
-        return "redirect:/";
+        return "redirect:/inventory/unit";
     }
 
     @PostMapping("/delete/{unitID}")
 public String deleteUnit(@PathVariable("unitID") int unitID) {
     unitService.deleteUnitById(unitID);
-    return "redirect:/"; // Redirect to the main page after deletion
+    return "redirect:/inventory/unit"; // Redirect to the main page after deletion
 }
 
 

@@ -25,6 +25,14 @@
             }
         }
     </script>
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
 
 </head>
 <body>
@@ -38,22 +46,33 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li class="active">Inventory Module</li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
+        <!-- Success and Error Messages with Named Buttons -->
+<div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
+    <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+</div>
+<div th:if="${successMessage}" class="success-message">
+    <p th:text="${successMessage}"></p>
+    <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+</div>
         <div class="tab-buttons">
-            <button ><a th:href="@{/item}">Item Definition</a></button>
-            <button ><a th:href="@{/unit}">Unit Definition</a></button>
-            <button ><a th:href="@{/category}">Category Definition</a></button>
-            <button ><a th:href="@{/receivedItem}">Received Items</a></button>
-            <button><a th:href="@{/issuedItem}"> Issued Items</a></button>
+            <button ><a th:href="@{/inventory/item}">Item Definition</a></button>
+            <button ><a th:href="@{/inventory/unit}">Unit Definition</a></button>
+            <button ><a th:href="@{/inventory/category}">Category Definition</a></button>
+            <button ><a th:href="@{/inventory/receivedItem}">Receiveing Items</a></button>
+            <button><a th:href="@{/inventory/issuedItem}"> Issueing Items</a></button>
         </div>
         <div class="search-bar">
             <label for="searchInput">Search Items:</label>
@@ -82,7 +101,7 @@
                         <td th:text="${item.quantity}"></td>
                         <td th:text="${item.reorderlevel}"></td>
                         <td>
-                            <a th:href="@{/itemUpdate/{itemID}(itemID=${item.itemID})}">
+                            <a th:href="@{/inventory/itemUpdate/{itemID}(itemID=${item.itemID})}">
                                 <button class="edit">Edit</button>
                             </a>
                             <form th:action="@{/deleteItem/{itemID}(itemID=${item.itemID})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">

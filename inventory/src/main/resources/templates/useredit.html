@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Module</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/Helpscript.js"></script>
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Admin Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a  th:href="@{/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li class="active">Admins</li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        
+
+        <!-- User Registration -->
+        <div id="userRegistration" class="form-container">
+            <div class="action-buttons">
+                
+                <button><a th:href="@{/admin}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div>
+            <!-- Help Modal -->
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - User Edit</h2>
+        <p>This form allows you to edit the details of an existing user. Follow the steps below:</p>
+        <ul>
+            <li><strong>User ID:</strong> The user's ID is automatically displayed and cannot be edited. It is used to uniquely identify the user in the system.</li>
+            <li><strong>First Name:</strong> Update the user's first name. Ensure that it is the correct name (e.g., John).</li>
+            <li><strong>Last Name:</strong> Update the user's last name. Ensure that it is the correct name (e.g., Doe).</li>
+            <li><strong>Email:</strong> Update the user's email address. Ensure the email format is valid (e.g., example@mail.com).</li>
+            <li><strong>Phone Number:</strong> Update the user's phone number. Ensure the format is correct (e.g., 123-456-7890).</li>
+            <li><strong>Role Name:</strong> Update the user's role from the dropdown menu. Choose the appropriate role (e.g., Admin, Manager) from the available options.</li>
+            <li><strong>Update User Button:</strong> After making changes, click the <strong>Update User</strong> button to save the updated details.</li>
+        </ul>
+        <p><strong>Important Notes:</strong></p>
+        <ul>
+            <li>All fields are required to be updated before submitting the form.</li>
+            <li>After submission, a success or error message will appear based on the result of the update.</li>
+            <li>If the user’s information is successfully updated, the changes will be reflected in the system immediately.</li>
+        </ul>
+    </div>
+</div>
+
+            <h3>User edit </h3>
+            <form th:action="@{/updateUser}" th:object="${user}" method="post">
+                <label for="userID">user ID:</label>
+                    <input type="text" th:field="*{userID}"  readonly>
+                <label for="firstName"> First Name</label>
+                <input type="text" th:field="*{firstName}"  placeholder="Enter First Name" required>
+                <label for="lastName"> Last Name</label>
+                <input type="text" th:field="*{lastName}"  placeholder="Enter Last Name" required>
+                <label for="email"> email</label>
+                <input type="email" th:field="*{email}"  placeholder="Enter Email" required>
+                <label for="phoneNumber"> phoneNumber</label>
+                <input type="tel" th:field="*{phoneNumber}"  placeholder="Enter phone Number" required>
+                <label for="supplierID">Role Name:</label>
+                <select name="role.roleID" required>
+                    <option value="">Select Role</option>
+                    <option th:each="role : ${roles}" th:value="${role.roleID}" th:text="${role.roleName}"></option>
+                </select>
+                <button type="submit">Update User</button>
+            </form>
+        </div>
+
+       
+    </div>
+
+    
+</body>
+</html>

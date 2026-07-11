@@ -19,7 +19,7 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @GetMapping("/category")
+    @GetMapping("/inventory/category")
     public String showCategoryform(Model model){
         Categories category = new Categories();
         model.addAttribute("category", category);
@@ -33,10 +33,10 @@ public class CategoryController {
     public String saveCategory(@ModelAttribute("category") Categories category){
         System.out.println(category);
         categoryService.defineCategory(category);
-        return "redirect:/category";
+        return "redirect:/inventory/category";
     }
 
-    @GetMapping("/categoryupdate/{categoryID}")
+    @GetMapping("/inventory/categoryupdate/{categoryID}")
     public String showCategoryeditform(@PathVariable("categoryID")int categoryID, Model model){
         Categories category = categoryService.findById(categoryID);
         model.addAttribute("category", category);
@@ -46,7 +46,7 @@ public class CategoryController {
     @PostMapping("/updateCategory")
     public String updateCategory(@ModelAttribute("category")Categories category){
         categoryService.updateCategory(category);
-        return "redirect:/category";
+        return "redirect:/inventory/category";
     }
 
     @PostMapping("/deleteCategory/{categoryID}")

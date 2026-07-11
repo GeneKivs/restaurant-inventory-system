@@ -8,6 +8,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
+//data class that represents the item in the inventory
+// this class is used to define the item in the inventory
 @Entity
 @Table(name = "Items")
 public class Item {
@@ -18,6 +20,7 @@ public class Item {
 
     private String ItemName;
 
+    //foreign key
     @ManyToOne
     @JoinColumn(name = "categoryID", nullable = false)
     private Categories category;

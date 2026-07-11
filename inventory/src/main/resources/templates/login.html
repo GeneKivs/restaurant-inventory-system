@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login | Restaurant Inventory</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    text-align: center;
+}
+
+.login-container {
+    background: white;
+    padding: 20px;
+    margin: 100px auto;
+    width: 300px;
+    box-shadow: 0px 0px 10px 0px #0000001a;
+    border-radius: 8px;
+}
+
+h2 {
+    margin-bottom: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+.forgot-password {
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form th:action="@{/perform-login}" method="post">
+            <div th:if="${param.error}" class="error-message">
+                Invalid username or password.
+            </div>
+            <div th:if="${param.logout}" class="success-message">
+                You have successfully logged out.
+            </div>
+            <div th:if="${param.sessionExpired}" class="error-message">
+                Your session has expired. Please log in again.
+            </div>
+            
+
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <a th:href="@{/forgotPassword}" class="forgot-password">Forgot Password?</a>
+    </div>
+</body>
+</html>

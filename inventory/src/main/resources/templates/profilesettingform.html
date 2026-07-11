@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Settings Module</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
 
 </head>
 <body>
@@ -18,33 +26,54 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/inventory}">Inventory </a> </li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li class="active">Profile</li>
+            <li class="active">Profile Setting</li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
+                     <!-- Success and Error Messages with Named Buttons -->
+<div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
+    <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+</div>
+<div th:if="${successMessage}" class="success-message">
+    <p th:text="${successMessage}"></p>
+    <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+</div>
         
 
         <!-- Profile Settings Form -->
         <div id="profileSettings" class="form-container">
             <h3>Profile </h3>
             <form>
-                <label for="userID"> userID</label>
-                <input type="text" name="firstName" placeholder="Enter First Name" required>
-                <label for="firstName"> First Name</label>
-                <input type="text" name="firstName" placeholder="Enter First Name" required>
-                <label for="lastName"> Last Name</label>
-                <input type="text" name="lastName" placeholder="Enter Last Name" required>
-                <label for="email"> email</label>
-                <input type="email" name="email" placeholder="Enter Email" required>
-                <label for="phoneNumber"> phoneNumber</label>
-                <input type="tel" name="phoneNumber" placeholder="Enter phone Number" required>
-                
+                <label for="userID">User ID</label>
+                <input type="text" name="userID" th:value="${user.userID}" readonly>
+            
+                <label for="firstName">First Name</label>
+                <input type="text" name="firstName" th:value="${user.firstName}" readonly>
+            
+                <label for="lastName">Last Name</label>
+                <input type="text" name="lastName" th:value="${user.lastName}" readonly>
+            
+                <label for="email">Email</label>
+                <input type="email" name="email" th:value="${user.email}" readonly>
+            
+                <label for="phoneNumber">Phone Number</label>
+                <input type="tel" name="phoneNumber" th:value="${user.phoneNumber}" readonly>
+            
+                <p>If you need to update your details, please contact the admin.</p>
+            
+                <!-- Change Password Button -->
+                <a th:href="@{/profile/changePassword}">
+                    <button type="button">Change Password</button>
+                </a>
             </form>
         </div>
 

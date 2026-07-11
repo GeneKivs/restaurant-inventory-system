@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Received Form</title>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="/Helpscript.js"></script>
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/profile}">Profile Seting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <!-- Success and Error Messages with Named Buttons -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+            <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+        </div>
+        <div th:if="${successMessage}" class="success-message">
+            <p th:text="${successMessage}"></p>
+            <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+        </div>  
+        
+       
+        <div class="form-container" >
+            <h3>Edit Received item</h3>
+            <div class="action-buttons">
+                
+                <button><a th:href="@{/inventory/receivedlist}">Recieveditem List</a></button>
+                <button><a th:href="@{/inventory}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div>
+            <div id="helpModal" class="modal" style="display:none;">
+                <div class="modal-content">
+                    <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+                    <h2>Help Information</h2>
+                    <p>Use this form to edit the details of an item you received into inventory.</p>
+                    <ul>
+                        <li><strong>Item Name, Order ID, and Unit</strong> are read-only.</li>
+                        <li>Update the <strong>Quantity Received</strong> if needed.</li>
+                        <li>Update the <strong>Expiry Date</strong> if the item has an expiry.</li>
+                        <li>The <strong>Edited Date</strong> is automatically set to today’s date.</li>
+                        <li>Click <strong>Update</strong> to save changes.</li>
+                    </ul>
+                </div> 
+                
+            </div>
+             
+    
+            
+            <form th:action="@{/updateReceivedItem}" method="post">
+                <input type="hidden" name="receivedID" th:value="${receivedItem.receivedID}" />
+            
+                <label>Item Name:</label>
+                <input type="text" th:value="${receivedItem.item.itemName}" readonly />
+                <input type="hidden" name="itemID" th:value="${receivedItem.item.itemID}" />
+
+            
+                <label>Order ID:</label>
+                <input type="text" name="orderID" th:value="${receivedItem.purchaseOrder.orderID}" readonly />
+            
+                <label>Unit:</label>
+                <input type="text"  th:value="${receivedItem.unit.unitAbbriviation}" readonly />
+                <input type="hidden" name="unitID" th:value="${receivedItem.unit.unitID}" />
+
+            
+                <label>Quantity Received:</label>
+                <input type="number" name="receiveedquantity" th:value="${receivedItem.receiveedquantity}" required />
+
+                <label for="Edit Date">edited Date:</label>
+                <input type="text" name="editedDate" placeholder="Edited Date" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" readonly>
+            
+                <label>Expiry Date:</label>
+                <input type="date" name="expiryDate" th:value="${receivedItem.expiryDate}"  />
+            
+                <button type="submit">Update</button>
+            </form>
+            
+        </div>
+
+    </div>
+    
+
+    
+    
+</body>
+</html>

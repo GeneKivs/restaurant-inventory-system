@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Module</title>
     <link rel="stylesheet" href="style.css">
+    <script src="/Helpscript.js"></script>
 </head>
 <body>
     <div class="header">
@@ -17,12 +18,14 @@
 
     <div class="sidebar">
         <ul>
-            <li><a  th:href="@{/}">Dashboard</a></li>
+            <li><a  th:href="@{/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/inventory}">Inventory </a> </li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li class="active">Admins</li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
@@ -31,6 +34,31 @@
         <!-- Role Definition -->
         <div id="roleDefinition" class="form-container" >
             <h3>Role Definition</h3>
+            <div class="action-buttons">
+                
+                <button><a th:href="@{/admin}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div>
+            <!-- Help Modal -->
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Role Definition</h2>
+        <p>This form allows you to define new roles for users in the system. The role defines the permissions granted to users. Follow these steps:</p>
+        <ul>
+            <li><strong>Role Name:</strong> Enter a name for the new role. This could be something like "Admin", "Manager", etc.</li>
+            <li><strong>Permissions:</strong> Select the permissions that you wish to assign to this role. Each permission grants the role specific actions within the system.</li>
+            <li><strong>Save Role Button:</strong> Once the role name and permissions are selected, click this button to save the new role.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>Make sure to assign the appropriate permissions based on the role's responsibilities.</li>
+            <li>Once saved, the role will be available for assignment to users in the system.</li>
+            <li>If you wish to exit without saving, click the <strong>EXIT</strong> button.</li>
+        </ul>
+    </div>
+</div>
+
             <form th:action="@{/saveRole}" th:object="${role}" method="post">
                 <input type="text" name="roleName" placeholder="Role Name" required>
                 <h4>Permissions:</h4>

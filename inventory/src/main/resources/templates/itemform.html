@@ -4,7 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Definition</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
 
 </head>
 <body>
@@ -23,21 +31,48 @@
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
+               <!-- Success and Error Messages with Named Buttons -->
+<div th:if="${errorMessage}" class="error-message">
+    <p th:text="${errorMessage}"></p>
+    <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+</div>
+<div th:if="${successMessage}" class="success-message">
+    <p th:text="${successMessage}"></p>
+    <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+</div>
        
 
         <div id="itemDefinition" >
             <h3>Item Definition</h3>
             <div class="action-buttons">
                 
-                <button><a th:href="@{/inventory}">EXIT</a></button>
+                <a th:href="@{/inventory}">
+                    <button class="exit">Exit</button>
+                </a>
+                <button class="help" onclick="openHelp()">❓ Help</button>
             </div>
             <div>
 
+            </div>
+            <div id="helpModal" class="help-modal" style="display: none;">
+                <div class="help-content">
+                    <span onclick="closeHelp()" class="close-btn" style="cursor:pointer; float:right;">&times;</span>
+                    <h2>Help - Item Definition Form</h2>
+                    <p>This form is used to define inventory items that will be used in various transactions throughout the system.</p>
+                    <ul>
+                        <li><strong>Item Name:</strong> Name of the inventory item (e.g., Sugar, Rice).</li>
+                        <li><strong>Category:</strong> Category the item belongs to (e.g., Food, Beverages).</li>
+                        <li><strong>Unit:</strong> Unit of measurement (e.g., Kg, Litre).</li>
+                        <li><strong>Reorder Level:</strong> Minimum quantity before stock is considered low.</li>
+                    </ul>
+                </div>
             </div>
             <div class="form-container">
                 <form th:action="@{/saveItem}"th:object="${item}" method="post">
@@ -61,44 +96,28 @@
                     <button type="submit">Save Item</button>
                 </form>
             </div>
-            <div class="table-container">
-                <h3>Items</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item ID</th>
-                            <th>Item Name</th>
-                            <th>Category</th>
-                            <th>Unit</th>
-                            <th>Quantity</th>
-                            <th>Reorder Level</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="item : ${items}">
-                            <td th:text="${item.itemID}"></td>
-                            <td th:text="${item.itemName}"></td>
-                            <td th:text="${item.category.categoryName}"></td>
-                            <td th:text="${item.unit.unitAbbriviation}"></td>
-                            <td th:text="${item.quantity}"></td>
-                            <td th:text="${item.reorderlevel}"></td>
-                            <td>
-                                <a th:href="@{/itemUpdate/{itemID}(itemID=${item.itemID})}">
-                                    <button class="edit">Edit</button>
-                                </a>
-                                <form th:action="@{/deleteItem/{itemID}(itemID=${item.itemID})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this item?');">
-                                    <input type="hidden" name="_method" value="delete" />
-                                    <button type="submit" class="delete">Delete</button>
-                                </form>
-                                    
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            
             
         </div>
+        <!-- Help Modal -->
+
+
+<!-- Script -->
+<script>
+function openHelp() {
+    document.getElementById('helpModal').style.display = 'block';
+}
+function closeHelp() {
+    document.getElementById('helpModal').style.display = 'none';
+}
+window.onclick = function(event) {
+    const modal = document.getElementById('helpModal');
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+}
+</script>
+
 
       
     

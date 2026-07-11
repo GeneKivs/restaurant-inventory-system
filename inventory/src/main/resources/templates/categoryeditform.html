@@ -18,18 +18,39 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li class="active">Inventory Module</li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
         <div class="main-content">
              <div class="form-container" >
                 <h3>Category edit</h3>
+                
+                <div class="action-buttons">
+                <a th:href="@{/inventory/category}">
+                    <button class="exit">Exit</button>
+                </a>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div>
+             <!-- Help Modal -->
+             <div id="helpModal" class="help-modal" style="display: none;">
+                <div class="help-content">
+                    <span onclick="closeHelp()" class="close-btn" style="cursor:pointer; float:right;">&times;</span>
+                    <h2>Help - Category Edit Form</h2>
+            <p>This form allows you to edit an existing category.</p>
+            <ul>
+                <li><strong>Category ID:</strong> This field displays the unique identifier for the category (cannot be edited).</li>
+                <li><strong>Category Name:</strong> This field allows you to update the name of the category. Enter a new name and click 'Update Category' to save changes.</li>
+            </ul>
+                </div>
+            </div>
                 
                 <form th:action="@{/updateCategory}" th:object="${category}" method="POST">
                     <label for="categoryID">category ID:</label>
@@ -43,7 +64,21 @@
             </div>
           
         </div>
-
+<!-- Help Script -->
+<script>
+    function openHelp() {
+        document.getElementById('helpModal').style.display = 'block';
+    }
+    function closeHelp() {
+        document.getElementById('helpModal').style.display = 'none';
+    }
+    window.onclick = function(event) {
+        const modal = document.getElementById('helpModal');
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    }
+    </script>
     
 </body>
 </html>

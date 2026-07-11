@@ -4,15 +4,139 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        /* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    overflow: auto; /* Enable scroll if needed */
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less depending on screen size */
+    max-width: 500px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.bold-notification {
+    font-weight: bold;
+    color: red; /* Optional: Use red to make it stand out even more */
+}
+
+
+    </style>
+    <script>
+        async function fetchNotifications() {
+            const response = await fetch('/allNotifications');
+            const notifications = await response.json();
+    
+            const badge = document.getElementById('notificationBadge');
+            const dropdown = document.getElementById('notificationDropdown');
+    
+            badge.textContent = notifications.length; // Show the number of notifications
+            dropdown.innerHTML = ''; // Clear existing notifications
+    
+            notifications.forEach(notification => {
+                const div = document.createElement('div');
+                div.classList.add('notification-item');
+                div.textContent = `${notification.type}: ${notification.message}`;
+                //div.onclick = () => markAsRead(notification.notificationID);
+                dropdown.appendChild(div);
+            });
+    
+            if (notifications.length === 0) {
+                badge.style.display = "none"; // Hide badge if no notifications
+            } else {
+                badge.style.display = "inline";
+            }
+        }
+    
+        //async function markAsRead(id) {
+           // await fetch(`/api/notifications/markAsRead/${id}`, { method: 'POST' });
+            //fetchNotifications(); // Refresh the notifications
+       // }
+    
+        function showNotifications() {
+            document.getElementById('notificationDropdown').classList.toggle("show");
+        }
+    
+        // Fetch notifications when the page loads
+        window.onload = fetchNotifications;
+        function openNotificationModal(notificationJson) {
+            var notification = JSON.parse(notificationJson);
+
+            // Set the content of the modal
+            document.getElementById('notificationModalMessage').textContent = notification.message;
+            document.getElementById('notificationModalType').textContent = notification.type;
+            document.getElementById('notificationModalDate').textContent = notification.createdAt;
+            
+            // Show the modal
+            document.getElementById('notificationModal').style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById('notificationModal').style.display = "none";
+        }
+
+        function showNotifications() {
+            document.getElementById('notificationDropdown').classList.toggle("show");
+        }
+
+        // Fetch notifications when the page loads
+        window.onload = fetchNotifications;
+    </script>
+    
 </head>
 <body>
     <div class="header">
         <div class="logo">Restaurant Inventory System</div>
         <div class="icons">
-            <i class="notification">🔔<span class="badge">3</span></i>
-            <i class="help">❓</i>
+            <i class="notification" onclick="showNotifications()">🔔
+                <span id="notificationBadge" class="badge"></span>
+            </i>
+           
         </div>
+    </div>
+    <div id="notificationDropdown" class="dropdown-content">
+        <h2>Notifications</h2>
+        <ul>
+            <h3>Low stock Alerts</h3>
+            <li th:each="notification : ${notifications}" th:if="${notification.type == 'Lowstock'}">
+                <strong>Low Stock alert:</strong> 
+                <span th:text="${notification.message}"></span>
+                <br><small th:text="${notification.createdAt}"></small>
+            </li>
+            <h3>purchase order geration alerts</h3>
+            <li th:each="notification : ${notifications}" th:if="${notification.type == 'PurchaseOrder'}">
+                <strong>Generated purchase order:</strong> 
+                <span th:text="${notification.message}"></span>
+                <br><small th:text="${notification.createdAt}"></small>
+            </li>
+        </ul>
     </div>
 
     <div class="sidebar">
@@ -22,16 +146,18 @@
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
-        <div class="welcome">Welcome, Admin!</div>
+        
 
         <div class="cards">
             <div class="card">
-                <h3>Total Items</h3>
+                <h3>Number of Items</h3>
                 <p th:text="${itemCount}"></p>
             </div>
             <div class="card">
@@ -42,21 +168,70 @@
                 <h3>Pending Orders</h3>
                 <p th:text="${pendingOrdersCount}"></p>
             </div>
+            <div class="card">
+                <h3>Genereted Orders</h3>
+                <p th:text="${generatedOrdersCount}"></p>
+            </div>
         </div>
 
         <div class="quick-actions">
-            <a th:href="@{/item}">
+            <a th:href="@{/inventory/item}">
                 <button >Add New Item</button>
             </a>
             
             
-                <button >View Reports</button>
-        
+            <a th:href="@{/report}">
+                <button >Veiw Reports</button>
+            </a>
            
             <a th:href="@{/purchase}">
                 <button >Manage Suppliers</button>
             </a>
             
+        </div>
+       
+
+<!-- Modal content -->
+<div id="notificationModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Notification Details</h3>
+        <p><strong>Type: </strong><span id="notificationModalType"></span></p>
+        <p><strong>Message: </strong><span id="notificationModalMessage"></span></p>
+        <p><strong>Date: </strong><span id="notificationModalDate"></span></p>
+    </div>
+</div>
+
+        <h3>Notifications</h3>
+            <table>
+                <thead>
+                    <tr>
+                        
+                        <th>type</th>
+                        <th>message</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="notification : ${notifications}" th:if="${!notification.isread}">
+                        <td>
+                            <span th:text="${notification.type}" 
+                                  th:class="${notification.type == 'Lowstock' ? 'bold-notification' : ''}">
+                            </span>
+                        </td>
+                        <td th:text="${notification.message}"></td>
+                        <td>
+                            <form th:action="@{/notifications/markAsRead/{notificationID}(notificationID=${notification.notificationID})}" method="post" style="display:inline;">
+                                <button type="submit" onclick="openNotificationModal( '${notification}' )">Read</button>
+                            </form>
+                        </td>
+                    </tr>
+                    
+                        
+                        
+                    
+                </tbody>
+            </table>
         </div>
     </div>
 </body>

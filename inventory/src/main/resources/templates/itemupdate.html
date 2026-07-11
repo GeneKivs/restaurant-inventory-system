@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Definition</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/Helpscript.js"></script>
 
 </head>
 <body>
@@ -18,12 +19,14 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li class="active">Inventory Module</li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
@@ -35,8 +38,31 @@
             <div class="action-buttons">
                
                 <button><a th:href="@{/inventory}">EXIT</a></button>
+                <button class="help" onclick="openHelp()">❓ Help</button>
             </div>
             <div>
+                <!-- Help Modal --> 
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Edit Item</h2>
+        <p>This form allows you to update the details of an existing inventory item. Follow these instructions carefully:</p>
+        <ul>
+            <li><strong>Item ID:</strong> This is the unique identifier for the item. It is automatically filled and cannot be edited.</li>
+            <li><strong>Item Name:</strong> Update the name of the item if necessary.</li>
+            <li><strong>Category Name:</strong> Select the correct category for the item from the dropdown list.</li>
+            <li><strong>Unit Name:</strong> Select the unit of measurement for the item from the dropdown list.</li>
+            <li><strong>Reorder Level:</strong> Enter the minimum stock quantity at which the system should notify for reordering.</li>
+            <li><strong>Update Item Button:</strong> Click this button to save the updated information.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>Ensure that all fields are correctly updated before clicking the update button.</li>
+            <li>If you need to exit without saving changes, click the <strong>EXIT</strong> button.</li>
+        </ul>
+    </div>
+</div>
+
 
             </div>
             <div class="form-container">

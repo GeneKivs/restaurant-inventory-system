@@ -29,7 +29,7 @@ public class SupplierLinkageController {
     @Autowired
     private ItemService itemService;
 
-    @GetMapping("/supplierItem")
+    @GetMapping("/purchase/supplierItem")
     public String showLinkagefrom(Model model){
         SupplierLinkage supplierLinkage = new SupplierLinkage();
         model.addAttribute("supplierLinkage", supplierLinkage);
@@ -50,10 +50,10 @@ public class SupplierLinkageController {
     public String saveLink(@ModelAttribute("supplierLinkage") SupplierLinkage supplierLinkage){
         System.out.println(supplierLinkage);
         supplierLinkageService.defineLink(supplierLinkage);
-        return "redirect:/supplierItem";
+        return "redirect:/purchase/supplierItem";
     }
 
-    @GetMapping("/linkUpdate/{supplierLinkID}")
+    @GetMapping("/purchase/linkUpdate/{supplierLinkID}")
     public String showLinkUpdateForm(@PathVariable("supplierLinkID") int supplierLinkID, Model model){
         SupplierLinkage supplierLinkage = supplierLinkageService.findLinkById(supplierLinkID);
         model.addAttribute("supplierLinkage", supplierLinkage);
@@ -71,13 +71,13 @@ public class SupplierLinkageController {
     @PostMapping("/updateLinkage")
     public String updatelinkage(@ModelAttribute("supplierLinkage") SupplierLinkage supplierLinkage){
         supplierLinkageService.updateLink(supplierLinkage);
-        return "redirect:/supplierItem";
+        return "redirect:/purchase/supplierItem";
     }
 
     @PostMapping("/deleteLinkage/{supplierLinkID}")
     public String deleteLinkString(@PathVariable("supplierLinkID") int supplierLinkID){
         supplierLinkageService.deleteLinkById(supplierLinkID);
-        return "redirect:/supplierItem";
+        return "redirect:/purchase/supplierItem";
     }
 
 }

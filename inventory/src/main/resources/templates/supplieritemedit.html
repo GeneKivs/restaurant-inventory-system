@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supplier Item Linkage</title>
     <link rel="stylesheet" href="/style.css">
+    <script src="/Helpscript.js"></script>
     
 </head>
 <body>
@@ -18,18 +19,20 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li><a th:href="@{/inventory}">Inventory</a></li>
             <li class="active">Purchase Module</li>
             <li><a th:href="@{/admin}">Admins</a> </li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
         </ul>
     </div>
 
     <div class="main-content">
         <div id="supplierItemLinkage" class="form-container">
-            <h3>Supplier Item Linkage</h3>
+            <h3>Supplier Item Linkage edit</h3>
             <form th:action="@{/updateLinkage}" th:object="${supplierLinkage}" method="POST">
                 <label for="supplierLinkID">Supplier ID </label>
                 <input type="text" id="supplierLinkID" th:field="*{supplierLinkID}" name="supplierLinkID" readonly>
@@ -56,7 +59,27 @@
                 <div class="action-buttons">
                     <button type="submit" class="save">Save Linkage</button>
                     <button><a th:href="@{/purchase}">Exit</a></button>
+                    <button class="help" onclick="openHelp()">❓ Help</button>
                 </div>
+                <!-- Help Modal -->
+<div id="helpModal" class="help-modal" style="display: none;">
+    <div class="help-content">
+        <span onclick="closeHelp()" class="close-btn" style="float:right; cursor:pointer;">&times;</span>
+        <h2>Help - Edit Supplier Item Linkage</h2>
+        <p>This form allows you to edit the linkage between a supplier and an item. Follow these instructions carefully:</p>
+        <ul>
+            <li><strong>Supplier ID:</strong> This field displays the unique identifier for the supplier-item linkage. It is read-only and cannot be changed.</li>
+            <li><strong>Supplier Name:</strong> Select the supplier whose item linkage you wish to edit. This dropdown will show the existing suppliers.</li>
+            <li><strong>Item Name:</strong> Choose the item you want to link with the selected supplier. You can select from a list of items that have been previously defined.</li>
+            <li><strong>Save Linkage Button:</strong> After selecting both the supplier and the item, click the <strong>Save Linkage</strong> button to save the updated linkage.</li>
+        </ul>
+        <p><strong>Notes:</strong></p>
+        <ul>
+            <li>If you need to exit the form without saving, click the <strong>Exit</strong> button to return to the previous page.</li>
+        </ul>
+    </div>
+</div>
+
             </form>
         </div>
                

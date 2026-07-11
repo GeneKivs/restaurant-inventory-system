@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Module</title>
+    <link rel="stylesheet" href="/style.css">
+    <script>
+        function filterTable() {
+            let input = document.getElementById('searchInput'); // Get the search input
+            let filter = input.value.toLowerCase(); // Convert input to lowercase for case-insensitive search
+            let table = document.querySelector('table'); // Get the table element
+            let rows = table.getElementsByTagName('tr'); // Get all rows in the table
+
+            // Loop through the rows and hide the ones that don't match the search query
+            for (let i = 1; i < rows.length; i++) {
+                let cells = rows[i].getElementsByTagName('td');
+                let itemName = cells[1] ? cells[1].textContent.toLowerCase() : ''; // Get the Item Name cell text
+
+                if (itemName.indexOf(filter) > -1) {
+                    rows[i].style.display = ''; // Show the row if it matches the filter
+                } else {
+                    rows[i].style.display = 'none'; // Hide the row if it doesn't match
+                }
+            }
+        }
+    </script>
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
+
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Inventory Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li class="active">Inventory Module</li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/report}">Reports</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="tab-buttons">
+            <button ><a th:href="@{/inventory/item}">Item Definition</a></button>
+            <button ><a th:href="@{/inventory/unit}">Unit Definition</a></button>
+            <button ><a th:href="@{/inventory/category}">Category Definition</a></button>
+            <button ><a th:href="@{/inventory/receivedItem}">Received Items</a></button>
+            <button><a th:href="@{/inventory/issuedItem}"> Issued Items</a></button>
+        </div>
+        <!-- Success and Error Messages with Named Buttons -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+            <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+        </div>
+        <div th:if="${successMessage}" class="success-message">
+            <p th:text="${successMessage}"></p>
+            <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+        </div>   
+        <div class="search-bar">
+            <label for="searchInput">Search Items:</label>
+            <input type="text" id="searchInput" placeholder="Search for an item..." onkeyup="filterTable()">
+        </div>
+        <div class="table-container">
+            <h3>Received Items</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Recieved ID</th>
+                        <th>Item Name</th>
+                        <th>orderID</th>
+                        <th>Recieved date</th>
+                        <th>Received Quantity</th>
+                        <th>Dameged Quantity</th>
+                        <th>Pending Quantity</th>
+                        
+                        <th>unit</th>
+                        <th>Received Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="receivedItem: ${receivedItems}">
+                        <td th:text="${receivedItem.receivedID}"></td>
+                        <td th:text="${receivedItem.item.itemName}"></td>
+                        
+                        <td th:text="${receivedItem.purchaseOrder.orderID}"></td>
+                        <td th:text="${receivedItem.receivedDate}"></td>
+                        <td th:text="${receivedItem.receiveedquantity}"></td>
+                        <td th:text="${receivedItem.damagequantity}"></td>
+                        <td th:text="${receivedItem.pendingquantity}"></td>
+                        <td th:text="${receivedItem.item.unit.unitAbbriviation}"></td>
+                        <td th:text="${receivedItem.receivedStatus}"></td>
+                        <td>
+                            
+                            <a th:href="@{/inventory/receivededit/{receivedID}(receivedID=${receivedItem.receivedID})}">
+                                <button class="edit">Edit</button>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+    
+
+   
+</body>
+</html>

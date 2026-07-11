@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        function toggleTable() {
+            const reportType = document.getElementById("reportType").value;
+            document.getElementById("itemTableContainer").style.display = (reportType === "itemList") ? "block" : "none";
+            document.getElementById("supplierTableContainer").style.display = (reportType === "supplierList") ? "block" : "none";
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('reportContent');
+            html2pdf().from(element).save('report.pdf');
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">Report Module</div>
+        <div class="icons">
+            <i class="notification">🔔<span class="badge">3</span></i>
+            <i class="help">❓</i>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <ul>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
+            <li><a th:href="@{/inventory}">Inventory </a> </li>
+            <li><a th:href="@{/purchase}">Purchase</a></li>
+            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li class="active">Reports</li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <h2>Listing Reports</h2>
+        <div class="action-buttons">
+                
+            <button><a th:href="@{/report}">EXIT</a></button>
+        </div>
+        
+        <form method="get" th:action="@{/report/listing}">
+            <label >Select Report</label>
+            <select name="type" id="reportType" onchange="toggleTable()">
+                <option>--select listing Rport--</option>
+                <option value="itemList">Item List</option>
+                <option value="supplierList">Supplier List</option>
+                <option value="supplierItemWise">Suppliers Item-wise</option>
+            </select>
+            <button type="submit">Generate Report</button>
+            <button type="button" onclick="downloadPDF()">Download PDF</button>
+        </form>
+         <!-- Report Content -->
+          <div id="reportContent">
+         <div id="itemTableContainer" th:if="${items != null}">
+            <h3>Item List Report</h3>
+            <table id="reportTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Quantity in stock</th>
+                        <th>unit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Thymeleaf renders data from backend -->
+                    <tr th:each="item : ${items}">
+                        <td th:text="${item.itemID}"></td>
+                        <td th:text="${item.itemName}"></td>
+                        <td th:text="${item.category.categoryName}"></td>
+                        <td th:text="${item.quantity}"></td>
+                        <td th:text="${item.unit.unitAbbriviation}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="supplierTableContainer" th:if="${suppliers != null}">
+            <h3>Supplier List Report</h3>
+            <table id="supplierTable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Phone Number1</th>
+                        <th>phone Number2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="supplier : ${suppliers}">
+                        <td th:text="${supplier.supplierID}"></td>
+                        <td th:text="${supplier.supplierName}"></td>
+                        <td th:text="${supplier.phoneNumber1}"></td>
+                        <td th:text="${supplier.phoneNumber2}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    
+</body>
+</html>

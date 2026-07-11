@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Category Form</title>
-    <link rel="stylesheet" href="style.css">
-
+    <title>Category Definition</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- Help Script -->
+    <script src="/Helpscript.js"></script>
+    <script>
+        function closeMessage(className) {
+            var message = document.querySelector('.' + className);
+            if (message) {
+                message.style.display = 'none';
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="header">
@@ -18,28 +27,56 @@
 
     <div class="sidebar">
         <ul>
-            <li><a th:href="@{/}">Dashboard</a></li>
+            <li><a th:href="@{/dashboard}">Dashboard</a></li>
             <li class="active">Inventory Module</li>
             <li><a th:href="@{/purchase}">Purchase</a></li>
-            <li><a th:href="@{/admin}">Admins</a> </li>
+            <li><a th:href="@{/admin}">Admins</a></li>
             <li><a th:href="@{/report}">Reports</a></li>
-            <li><a th:href="@{/setting}">Profile</a></li>
+            <li><a th:href="@{/profile}">Profile Setting</a></li>
+            <li><a th:href="@{/logout}" onclick="return confirm('Are you sure you want to log out?')">Logout</a></li>
         </ul>
     </div>
 
-        <div class="main-content">
-             <div class="form-container" >
-                <h3>Category Definition</h3>
-                <div class="action-buttons">
-                    <button class="add">Add</button>
-                   
-                    <button><a th:href="@{/inventory}">EXIT</a></button>
+    <div class="main-content">
+        <!-- Success and Error Messages -->
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+            <button class="error-btn" onclick="closeMessage('error-message')">OK</button>
+        </div>
+        <div th:if="${successMessage}" class="success-message">
+            <p th:text="${successMessage}"></p>
+            <button class="success-btn" onclick="closeMessage('success-message')">OK</button>
+        </div>
+
+        <div id="categoryDefinition">
+            <h3>Category Definition</h3>
+            <div class="action-buttons">
+                <a th:href="@{/inventory}">
+                    <button class="exit">Exit</button>
+                </a>
+                <button class="help" onclick="openHelp()">❓ Help</button>
+            </div>
+
+            <!-- Help Modal -->
+            <div id="helpModal" class="help-modal" style="display: none;">
+                <div class="help-content">
+                    <span onclick="closeHelp()" class="close-btn" style="cursor:pointer; float:right;">&times;</span>
+                    <h2>Help - Category Definition Form</h2>
+                    <p>This form is used to define categories for inventory items.</p>
+                    <ul>
+                        <li><strong>Category Name:</strong> Enter the name of the new category (e.g., "Beverages", "Meat", "Stationery").</li>
+        <li><strong>Save Category:</strong> Click to add the category to the system.</li>
+        <li><strong>Edit/Delete:</strong> Manage existing categories from the table below.</li>
+                    </ul>
                 </div>
-                <form th:action="@{/saveCategory}" th:object="${category}" method="POST">
-                <input type="text" th:field="*{categoryName}" placeholder="Category Name">
-                <button type="submit">Save Category</button>
+            </div>
+
+            <div class="form-container">
+                <form th:action="@{/saveCategory}" th:object="${category}" method="post">
+                    <label for="categoryName">Category Name:</label>
+                    <input type="text" th:field="*{categoryName}" placeholder="Enter category name" required>
+                    <button type="submit">Save Category</button>
                 </form>
-           
             </div>
             <div class="table-container">
                 <h3>Categories</h3>
@@ -56,7 +93,7 @@
                             <td th:text="${category.categoryID}">Category ID</td>
                             <td th:text="${category.categoryName}">Category Name</td>
                             <td>
-                                <a th:href="@{/categoryupdate/{categoryID}(categoryID=${category.categoryID})}">
+                                <a th:href="@{/inventory/categoryupdate/{categoryID}(categoryID=${category.categoryID})}">
                                     <button class="edit">Edit</button>
                                 </a>
                                 <form th:action="@{/deleteCategory/{categoryID}(categoryID=${category.categoryID})}" method="post" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this category?');">
@@ -68,9 +105,11 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+                </div>
         </div>
+    </div>
 
-    
+    <!-- Help Script -->
+    <script src="/Helpscript.js"></script>
 </body>
 </html>

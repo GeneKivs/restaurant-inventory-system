@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Restaurant Inventory System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-image: url('restaurant-bg.jpg'); /* Optional: background image */
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .cover-container {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      background-color: #2e8b57;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #246b45;
+    }
+  </style>
+</head>
+<body>
+  <div class="cover-container">
+    <h1>Welcome to Restaurant Inventory System</h1>
+    <a th:href="@{/login}">
+      <button class="edit">login</button>
+  </a>
+  </div>
+
+ 
+</body>
+</html>

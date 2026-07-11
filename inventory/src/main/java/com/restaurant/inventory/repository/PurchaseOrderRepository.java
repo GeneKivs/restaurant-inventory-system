@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.restaurant.inventory.model.Item;
 import com.restaurant.inventory.model.PurchaseOrder;
+import com.restaurant.inventory.model.Supplier;
 
 public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Long> {
 
@@ -18,6 +20,11 @@ public interface PurchaseOrderRepository extends JpaRepository<PurchaseOrder,Lon
      // New method to find orders by item ID and status
      @Query("SELECT o FROM PurchaseOrder o JOIN o.item i WHERE i.itemID = :itemID AND o.orderStatus = :orderStatus")
      List<PurchaseOrder> findByItemIDAndStatus(@Param("itemID") int itemID, @Param("orderStatus") String orderStatus);
- 
+    
+     boolean existsByItem(Item item);
+
+     boolean existsBySupplier(Supplier supplier);
+
+     boolean existsByItemAndOrderStatusIn(Item item, List<String> statuses);
 
 }
