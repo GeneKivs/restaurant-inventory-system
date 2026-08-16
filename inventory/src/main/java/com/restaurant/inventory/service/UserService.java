@@ -2,7 +2,7 @@ package com.restaurant.inventory.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,24 @@ import com.restaurant.inventory.utils.PasswordGenerator;
 @Service
 public class UserService { 
     
-   @Autowired
+  /*  @Autowired
     private EmailNotificationService emailNotificationService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepository userRepository;*/
+    private final EmailNotificationService emailNotificationService;
+    private final PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+
+    public UserService(EmailNotificationService emailNotificationService, PasswordEncoder passwordEncoder, UserRepository userRepository){
+        this.emailNotificationService = emailNotificationService;
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+    }
+
 
     public void defineuser(User user){
         //set email to userName

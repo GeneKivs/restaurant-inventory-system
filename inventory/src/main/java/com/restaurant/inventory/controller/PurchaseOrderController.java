@@ -7,7 +7,7 @@ import java.util.List;
 //import java.util.Map;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,23 +36,35 @@ import com.restaurant.inventory.service.UnitService;
 @Controller
 public class PurchaseOrderController {
 
-    @Autowired
+    /*@Autowired
     private PurchaseOrderRepository purchaseOrderRepository;
 
-    
     @Autowired
     private SupplierLinkageService supplierLinkageService;
 
     @Autowired
     private UnitService unitService;
 
-   
-
     @Autowired
     private ItemService itemService;
 
     @Autowired
-    private PurchaseOrderService purchaseOrderService;
+    private PurchaseOrderService purchaseOrderService;*/
+
+    private final PurchaseOrderRepository purchaseOrderRepository;
+    private final SupplierLinkageService supplierLinkageService;
+    private final UnitService unitService;
+    private final ItemService itemService;
+    private final PurchaseOrderService purchaseOrderService;
+
+    public PurchaseOrderController(ItemService itemService, PurchaseOrderRepository purchaseOrderRepository, PurchaseOrderService purchaseOrderService, SupplierLinkageService supplierLinkageService, UnitService unitService){
+        this.purchaseOrderRepository = purchaseOrderRepository;
+        this.supplierLinkageService = supplierLinkageService;
+        this.unitService = unitService;
+        this.itemService = itemService;
+        this.purchaseOrderService = purchaseOrderService;
+
+    }
 
     @GetMapping("/purchase/purchaseOrder")
     public String showPurchaseOrderForm(Model model,@RequestParam(required = false) Integer itemID){

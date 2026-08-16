@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,8 +18,13 @@ import com.restaurant.inventory.service.UnitService;
 @Controller
 public class UnitController {
 
-    @Autowired
+   /*  @Autowired
+    private UnitService unitService;*/
+
     private UnitService unitService;
+    public UnitController(UnitService unitService){
+        this.unitService = unitService;
+    }
 
     @GetMapping("/inventory/unit")
     public String showUnitform(Model model){

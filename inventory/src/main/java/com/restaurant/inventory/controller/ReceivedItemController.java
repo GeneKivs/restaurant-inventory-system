@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,10 +26,7 @@ import com.restaurant.inventory.service.UnitService;
 
 @Controller
 public class ReceivedItemController {
-
-
-
-    @Autowired
+    /*@Autowired
     private ItemService itemService;
 
     @Autowired
@@ -39,7 +36,20 @@ public class ReceivedItemController {
     private UnitService unitService;
 
     @Autowired
-    private ReceivedItemService receivedItemService;
+    private ReceivedItemService receivedItemService;*/
+
+    private final ItemService itemService;
+    private final PurchaseOrderService purchaseOrderService;
+    private final UnitService unitService;
+    private final ReceivedItemService receivedItemService;
+
+    public ReceivedItemController(ItemService itemService, PurchaseOrderService purchaseOrderService, ReceivedItemService receivedItemService, UnitService unitService){
+        this.itemService = itemService;
+        this.purchaseOrderService = purchaseOrderService;
+        this.unitService = unitService;
+        this.receivedItemService = receivedItemService;
+
+    }
 
 
 

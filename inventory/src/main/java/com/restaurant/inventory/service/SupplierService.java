@@ -2,7 +2,7 @@ package com.restaurant.inventory.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -12,8 +12,16 @@ import com.restaurant.inventory.repository.SupplierRepository;
 @Service
 public class SupplierService {
 
-    @Autowired
-    private SupplierRepository supplierRepository;
+    //@Autowired
+    //private SupplierRepository supplierRepository;
+
+    private final SupplierRepository supplierRepository;
+
+    public SupplierService(SupplierRepository supplierRepository){
+        this.supplierRepository = supplierRepository;
+    }
+
+
 
     public void defineSupplier(Supplier supplier){
         supplierRepository.save(supplier);

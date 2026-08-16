@@ -5,7 +5,7 @@ import java.util.List;
 
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
@@ -20,16 +20,27 @@ import com.restaurant.inventory.repository.ReceivedItemRepositptory;
 public class IssueItemService {
      
 
-    @Autowired
-    private ItemService itemService;
+    //@Autowired
+    //private ItemService itemService;
+    private final ItemService itemService;
 
     
-    @Autowired
-    private ReceivedItemRepositptory receivedItemRepositptory;
+   // @Autowired
+    //private ReceivedItemRepositptory receivedItemRepositptory;
+    private final ReceivedItemRepositptory receivedItemRepositptory;
 
 
-    @Autowired
-    private IssueItemRepository issueItemRepository;
+    //@Autowired
+    //private IssueItemRepository issueItemRepository;
+    private final IssueItemRepository issueItemRepository;
+
+    public IssueItemService(ItemService itemService,ReceivedItemRepositptory receivedItemRepositptory,IssueItemRepository issueItemRepository){
+        this.itemService = itemService;
+        this.receivedItemRepositptory = receivedItemRepositptory;
+        this.issueItemRepository = issueItemRepository;
+
+
+    }
 
 
     //saving the transaction in the database

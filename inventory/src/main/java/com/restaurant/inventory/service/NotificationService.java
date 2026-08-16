@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.scheduling.annotation.Scheduled;
 
@@ -27,32 +27,42 @@ import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class NotificationService {
-    @Autowired
-    private ItemService itemService;
+    //@Autowired
+    //private ItemService itemService;
+    private final ItemService itemService;
 
-    @Autowired
-    private UserService userService;
+    //@Autowired
+   // private UserService userService;
+   private final UserService userService;
 
-    @Autowired
-    private EmailNotificationService emailNotificationService;
+    //@Autowired
+    //private EmailNotificationService emailNotificationService;
+    private final EmailNotificationService emailNotificationService;
 
-    @Autowired
-    private ItemRepository itemRepository;
-
-   
-
-    
+    //@Autowired
+    //private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
 
     public static final Logger logger = LoggerFactory.getLogger(NotificationService.class);
 
-
-   
-
-    @Autowired
+   /* @Autowired
     private NotificationRepository notificationRepository;
 
     @Autowired
-    private ReceivedItemRepositptory receivedItemRepositptory;
+    private ReceivedItemRepositptory receivedItemRepositptory;*/
+
+    private final NotificationRepository notificationRepository;
+    private final ReceivedItemRepositptory receivedItemRepositptory;
+
+    public NotificationService(ItemService itemService,UserService userService,EmailNotificationService emailNotificationService,ItemRepository itemRepository,NotificationRepository notificationRepository,ReceivedItemRepositptory receivedItemRepositptory){
+        this.itemService = itemService;
+        this.userService = userService;
+        this.emailNotificationService = emailNotificationService;
+        this.itemRepository = itemRepository;
+        this.notificationRepository = notificationRepository;
+        this.receivedItemRepositptory = receivedItemRepositptory;
+
+    }
 
     
     //create notifictaion

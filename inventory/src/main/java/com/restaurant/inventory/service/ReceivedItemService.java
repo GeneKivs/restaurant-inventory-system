@@ -3,7 +3,7 @@ package com.restaurant.inventory.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.inventory.model.ReceivedItem;
@@ -12,8 +12,14 @@ import com.restaurant.inventory.repository.ReceivedItemRepositptory;
 @Service // Marks this class as a service component in Spring boot
 public class ReceivedItemService {
 
-    @Autowired // Automatically injects an instance of ReceivedItemRepository
-    private ReceivedItemRepositptory receivedItemRepositptory;
+    /*@Autowired // Automatically injects an instance of ReceivedItemRepository
+    private ReceivedItemRepositptory receivedItemRepositptory;*/
+
+    private final ReceivedItemRepositptory receivedItemRepositptory;
+
+    public ReceivedItemService(ReceivedItemRepositptory receivedItemRepositptory){
+        this.receivedItemRepositptory = receivedItemRepositptory;
+    }
 
     // Method to add a new received item to the database
     public void additems(ReceivedItem receivedItem){

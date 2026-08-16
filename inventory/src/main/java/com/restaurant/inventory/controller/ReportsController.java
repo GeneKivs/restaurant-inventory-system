@@ -3,7 +3,7 @@ package com.restaurant.inventory.controller;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import com.restaurant.inventory.service.SupplierService;
 @Controller
 public class ReportsController {
 
-    @Autowired
+    /*@Autowired
     private ItemService itemService;
 
     @Autowired
@@ -32,7 +32,22 @@ public class ReportsController {
     private ReceivedItemService receivedItemService;
 
     @Autowired
-    private IssueItemService issueItemService;
+    private IssueItemService issueItemService;*/
+
+    private final ItemService itemService;
+    private final SupplierService supplierService;
+    private final ReceivedItemService receivedItemService;
+    private final IssueItemService issueItemService;
+
+    public ReportsController(IssueItemService issueItemService, ItemService itemService, ReceivedItemService receivedItemService, SupplierService supplierService){
+        this.itemService = itemService;
+        this.supplierService = supplierService;
+        this.receivedItemService = receivedItemService;
+        this.issueItemService = issueItemService;
+
+    }
+
+
 
     @GetMapping("/report")
     public String showReportsForm(){

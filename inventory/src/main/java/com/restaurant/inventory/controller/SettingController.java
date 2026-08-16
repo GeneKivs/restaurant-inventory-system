@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 import java.security.Principal;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +18,20 @@ import com.restaurant.inventory.service.UserService;
 @Controller
 public class SettingController {
 
-    @Autowired
+   /* @Autowired
     private PasswordEncoder passwordEncoder;
      
     @Autowired
-    private UserService userService;
+    private UserService userService;*/
+
+    private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
+
+    public SettingController(UserService userService, PasswordEncoder passwordEncoder){
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+
+    }
 
     @GetMapping("/setting")
     public String showSettingform(){

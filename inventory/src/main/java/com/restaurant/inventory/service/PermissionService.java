@@ -2,7 +2,7 @@ package com.restaurant.inventory.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.inventory.model.Permission;
@@ -11,8 +11,13 @@ import com.restaurant.inventory.repository.PermissionRepository;
 @Service // Marks this class as a service component in Spring
 public class PermissionService {
 
-    @Autowired // Automatically injects an instance of PermissionRepository
-    private PermissionRepository permissionRepository;
+   /* @Autowired // Automatically injects an instance of PermissionRepository
+    private PermissionRepository permissionRepository;*/ 
+    private final PermissionRepository permissionRepository;
+
+    public PermissionService(PermissionRepository permissionRepository){
+        this.permissionRepository = permissionRepository;
+    }
 
     // Method to define and save a new permission
     public void definePermision(Permission permission){

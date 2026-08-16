@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +18,20 @@ import com.restaurant.inventory.service.RolesService;
 @Controller
 public class RoleController {
 
-    @Autowired
+    /*@Autowired
     private RolesService rolesService;
 
     @Autowired
-    private PermissionService permissionService;
+    private PermissionService permissionService;*/
 
+    private final RolesService rolesService;
+    private final PermissionService permissionService;
+
+    public RoleController( PermissionService permissionService,RolesService rolesService){
+        this.rolesService = rolesService;
+        this.permissionService = permissionService;
+        
+    }
 
     @GetMapping("/roles")
     public String showRoleform(Model model){

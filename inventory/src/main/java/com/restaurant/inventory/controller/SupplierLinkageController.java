@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +20,25 @@ import com.restaurant.inventory.service.SupplierService;
 @Controller
 public class SupplierLinkageController {
 
-    @Autowired
+    /*@Autowired
     private SupplierLinkageService supplierLinkageService;
 
     @Autowired
     private SupplierService supplierService;
 
     @Autowired
-    private ItemService itemService;
+    private ItemService itemService;*/
+
+    private final SupplierLinkageService supplierLinkageService;
+    private final SupplierService supplierService;
+    private final ItemService itemService;
+
+    public SupplierLinkageController(ItemService itemService, SupplierLinkageService supplierLinkageService, SupplierService supplierService){
+        this.supplierLinkageService = supplierLinkageService;
+        this.supplierService = supplierService;
+        this.itemService = itemService;
+
+    }
 
     @GetMapping("/purchase/supplierItem")
     public String showLinkagefrom(Model model){

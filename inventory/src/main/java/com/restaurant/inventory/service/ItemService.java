@@ -2,7 +2,7 @@ package com.restaurant.inventory.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.inventory.model.Item;
@@ -13,8 +13,13 @@ public class ItemService {
 
     
     
-    @Autowired
-    private ItemRepository itemRepository;
+    //@Autowired
+   // private ItemRepository itemRepository;
+    private final ItemRepository itemRepository;
+
+    public ItemService(ItemRepository itemRepository){
+        this.itemRepository = itemRepository;
+    }
 
     // saving it in the database
     public void defineItem(Item item){

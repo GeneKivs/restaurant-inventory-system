@@ -3,7 +3,7 @@ package com.restaurant.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,13 +24,19 @@ import com.restaurant.inventory.service.ItemService;
 public class IssueItemController {
 
 
-    @Autowired
+    /*@Autowired
     private ItemService itemService;
-
-  
-
     @Autowired
-    private IssueItemService issueItemService;
+    private IssueItemService issueItemService;*/
+
+    private final ItemService itemService;
+    private final IssueItemService issueItemService;
+
+    public IssueItemController(IssueItemService issueItemService, ItemService itemService){
+        this.itemService = itemService;
+        this.issueItemService = issueItemService;
+
+    }
 
     @GetMapping("/inventory/issuedItem")
     public String showIssueForm(Model model,@RequestParam( value = "itemID" , required = false)  Integer itemID){

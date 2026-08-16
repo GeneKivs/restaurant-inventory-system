@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +19,19 @@ import com.restaurant.inventory.service.UserService;
 @Controller
 public class UserController {
 
-    @Autowired
+    /*@Autowired
     private UserService userService;
 
     @Autowired
-    private RolesService rolesService;
+    private RolesService rolesService;*/
+
+    private final UserService userService;
+    private final RolesService rolesService;
+
+    public UserController(RolesService rolesService, UserService userService){
+        this.userService = userService;
+        this.rolesService = rolesService;
+    }
 
     @GetMapping("/userRegistration")
     public String showUserregform(Model model){

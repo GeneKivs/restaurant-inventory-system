@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +18,19 @@ import com.restaurant.inventory.service.SupplierService;
 @Controller
 public class SupplierController {
 
-    @Autowired
+    /*@Autowired
     private PurchaseOrderService purchaseOrderService;
     
     @Autowired
-    private SupplierService supplierService;
+    private SupplierService supplierService;*/
+
+    private final PurchaseOrderService purchaseOrderService;
+    private final SupplierService supplierService;
+
+    public SupplierController(PurchaseOrderService purchaseOrderService,SupplierService supplierService){
+        this.purchaseOrderService = purchaseOrderService;
+        this.supplierService = supplierService;
+    }
 
     @GetMapping("/purchase/supplier")
     public String showSupplierForm(Model model){

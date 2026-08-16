@@ -2,7 +2,7 @@ package com.restaurant.inventory.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.inventory.model.Roles;
@@ -11,8 +11,13 @@ import com.restaurant.inventory.repository.RolesRepository;
 @Service
 public class RolesService {
 
-    @Autowired
-    private RolesRepository rolesRepository;
+    /*@Autowired
+    private RolesRepository rolesRepository;*/
+    private final RolesRepository rolesRepository;
+
+    public RolesService(RolesRepository rolesRepository){
+        this.rolesRepository = rolesRepository;
+    }
 
     public void defineRole(Roles role){
         rolesRepository.save(role);

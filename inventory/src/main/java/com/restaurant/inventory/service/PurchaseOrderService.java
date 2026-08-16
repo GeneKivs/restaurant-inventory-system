@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +19,24 @@ import com.restaurant.inventory.repository.PurchaseOrderRepository;
 public class PurchaseOrderService {
     private static final Logger logger = LoggerFactory.getLogger(PurchaseOrderService.class);
 
-    @Autowired
+   /*  @Autowired
     private NotificationService notificationService;
 
     @Autowired
     private ItemService itemService;
 
     @Autowired // Automatically injects an instance of PurchaseOrderRepository
-    private PurchaseOrderRepository purchaseOrderRepository;
+    private PurchaseOrderRepository purchaseOrderRepository;*/
+
+    private final NotificationService notificationService;
+    private final ItemService itemService;
+    private final PurchaseOrderRepository purchaseOrderRepository;
+
+    public PurchaseOrderService(NotificationService notificationService,ItemService itemService,PurchaseOrderRepository purchaseOrderRepository){
+        this.notificationService = notificationService;
+        this.itemService = itemService;
+        this.purchaseOrderRepository = purchaseOrderRepository;
+    }
 
     // Method to create and save a new purchase order
     public PurchaseOrder createOrder(PurchaseOrder purchaseOrder){

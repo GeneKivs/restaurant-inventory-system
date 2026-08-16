@@ -1,6 +1,6 @@
 package com.restaurant.inventory.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,8 +25,14 @@ import com.restaurant.inventory.service.CustomUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-     @Autowired
-    private CustomUserDetailsService userDetailsService;
+     //@Autowired
+    //private CustomUserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
+
+    public SecurityConfig(CustomUserDetailsService userDetailsService){
+        this.userDetailsService = userDetailsService;
+
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {

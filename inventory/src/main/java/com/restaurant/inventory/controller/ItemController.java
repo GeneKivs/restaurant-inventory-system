@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +22,7 @@ import com.restaurant.inventory.service.UnitService;
 @Controller
 public class ItemController {
 
-    @Autowired
+    /*@Autowired
     private PurchaseOrderService purchaseOrderService;
 
     @Autowired
@@ -32,7 +32,20 @@ public class ItemController {
     private UnitService unitService;
     
     @Autowired
-    private ItemService itemService;
+    private ItemService itemService;*/
+
+    private final PurchaseOrderService purchaseOrderService;
+    private final CategoryService categoryService;
+    private final UnitService unitService;
+    private final ItemService itemService;
+
+    public ItemController(CategoryService categoryService, ItemService itemService, PurchaseOrderService purchaseOrderService, UnitService unitService){
+        this.purchaseOrderService = purchaseOrderService;
+        this.categoryService = categoryService;
+        this.unitService = unitService;
+        this.itemService = itemService;
+
+    }
 
     //method to show the item definition form 
     @GetMapping("/inventory/item")

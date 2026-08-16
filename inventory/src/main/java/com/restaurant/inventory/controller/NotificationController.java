@@ -2,7 +2,7 @@ package com.restaurant.inventory.controller;
 
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,8 +14,12 @@ import com.restaurant.inventory.service.NotificationService;
 @Controller
 public class NotificationController {
 
-    @Autowired
-    private NotificationService notificationService;
+    //@Autowired
+    //private NotificationService notificationService;
+    private final NotificationService notificationService;
+    public NotificationController( NotificationService notificationService){
+      this.notificationService = notificationService;
+    }
 
     
 

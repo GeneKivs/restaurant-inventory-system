@@ -2,7 +2,7 @@ package com.restaurant.inventory.service;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,16 +13,19 @@ import com.restaurant.inventory.utils.PasswordGenerator;
 
 @Service
 public class ForgotPsswordService {
-    @Autowired
-    private  UserRepository userRepository;
+    private final  UserRepository userRepository;
 
    
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private EmailNotificationService emailService;
+    private final EmailNotificationService emailService;
+
+  ForgotPsswordService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailNotificationService emailService) {
+    this.userRepository = userRepository;
+    this.passwordEncoder = passwordEncoder;
+    this.emailService = emailService;
+  }
     
    public boolean resetPassword(String email){
     Optional<User> optionaluser = userRepository.findByEmail(email);

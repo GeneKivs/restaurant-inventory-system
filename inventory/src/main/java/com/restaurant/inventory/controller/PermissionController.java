@@ -1,6 +1,6 @@
 package com.restaurant.inventory.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +13,12 @@ import com.restaurant.inventory.service.PermissionService;
 @Controller
 public class PermissionController {
 
-    @Autowired
-    private PermissionService permissionService;
+    //@Autowired
+    //private PermissionService permissionService;
+    private final PermissionService permissionService;
+    public PermissionController(PermissionService permissionService){
+        this.permissionService = permissionService;
+    }
 
     @GetMapping("/permission")
     public String showPermissionForm(Model model){

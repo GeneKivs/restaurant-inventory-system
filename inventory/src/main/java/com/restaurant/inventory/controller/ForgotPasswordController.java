@@ -1,6 +1,6 @@
 package com.restaurant.inventory.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +13,13 @@ import com.restaurant.inventory.service.ForgotPsswordService;
 @Controller
 public class ForgotPasswordController {
 
-    @Autowired
-    private ForgotPsswordService forgotPsswordService;
+   // @Autowired
+    //private ForgotPsswordService forgotPsswordService;
+
+    private final ForgotPsswordService forgotPsswordService;
+    public ForgotPasswordController(ForgotPsswordService forgotPsswordService){
+        this.forgotPsswordService = forgotPsswordService;
+    }
 
 
     @GetMapping("/forgotPassword")
